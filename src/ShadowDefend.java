@@ -30,6 +30,7 @@ public class ShadowDefend extends AbstractGame {
     private double frameCount;
     private Wave wave;
     private Level level;
+    private int levelNo;
     /**
      * Creates a new instance of the ShadowDefend game
      */
@@ -39,7 +40,8 @@ public class ShadowDefend extends AbstractGame {
         this.polyline = map.getAllPolylines().get(0);
         this.frameCount = Integer.MAX_VALUE;
         this.wave = new Wave(polyline);
-        this.level = new Level(1);
+        this.levelNo = 1;
+        this.level = new Level(levelNo);
 
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
         // This fix is entirely optional
@@ -73,6 +75,14 @@ public class ShadowDefend extends AbstractGame {
         if (timescale > INITIAL_TIMESCALE) {
             timescale--;
         }
+    }
+
+    /**
+     * Update to new level when current level is finished
+     */
+    private void increaseLevel() {
+        levelNo += 1;
+        this.level = new Level(levelNo);
     }
 
     /**

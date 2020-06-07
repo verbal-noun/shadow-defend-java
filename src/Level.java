@@ -15,11 +15,13 @@ public class Level {
     private final TiledMap map;
     private final List<Point> polyline;
     public List<Wave> waves = new ArrayList<>();
+    private Player player;
 
     public Level(int currentLevel) {
         String MAP_FILE = String.format("res/levels/%s.tmx", currentLevel);
         this.map = new TiledMap(MAP_FILE);
         this.polyline = map.getAllPolylines().get(0);
+        this.player = new Player();
         // Load waves
         loadWave();
     }
