@@ -13,6 +13,7 @@ public class Wave {
     //The slicers and the path of the wave
     private final List<Slicer> slicers;
     private List<Point> polyline;
+    private List<String> events;
 
     public int getSpawnedSlicers() {
         return spawnedSlicers;
@@ -27,6 +28,7 @@ public class Wave {
         // Load polyline points from the map to the wave
         this.polyline = polyline;
         this.slicers = new ArrayList<>();
+        this.events = new ArrayList<>();
     }
 
     /* A method to initialise the wave of 5 slicers */
@@ -57,5 +59,10 @@ public class Wave {
                 slicers.remove(i);
             }
         }
+    }
+
+    // Add new in the wave event list
+    public void addEvent(String event) {
+        events.add(event);
     }
 }
