@@ -28,7 +28,6 @@ public class ShadowDefend extends AbstractGame {
     private final TiledMap map;
     private final List<Point> polyline;
     private double frameCount;
-    private Wave wave;
     private Level level;
     private int levelNo;
 
@@ -40,7 +39,6 @@ public class ShadowDefend extends AbstractGame {
         this.map = new TiledMap(MAP_FILE);
         this.polyline = map.getAllPolylines().get(0);
         this.frameCount = Integer.MAX_VALUE;
-        this.wave = new Wave(polyline);
         this.levelNo = 1;
         this.level = new Level(levelNo);
 
@@ -107,7 +105,7 @@ public class ShadowDefend extends AbstractGame {
 
         // Handle key presses
         if (input.wasPressed(Keys.S)) {
-            wave.startWave();
+            level.startLevel();
         }
 
         if (input.wasPressed(Keys.L)) {
@@ -118,20 +116,20 @@ public class ShadowDefend extends AbstractGame {
             decreaseTimescale();
         }
 
-        // Check if it is time to spawn a new slicer (and we have some left to spawn)
-        if (wave.waveStatus() && frameCount / FPS >= SPAWN_DELAY && wave.getSpawnedSlicers() != MAX_SLICERS) {
-            // Make a new slicer active in the wave
-            wave.spawnSlicer();
-            // Reset frame counter
-            frameCount = 0;
-        }
-
-        // Close game if all slicers have finished traversing the polyline
-        if (wave.getSpawnedSlicers() == MAX_SLICERS && wave.getSlicerCount() == 0) {
-            Window.close();
-        }
-
-        // Update all sprites, and remove them if they've finished
-        wave.updateWave(input);
+//        // Check if it is time to spawn a new slicer (and we have some left to spawn)
+//        if (wave.waveStatus() && frameCount / FPS >= SPAWN_DELAY && wave.getSpawnedSlicers() != MAX_SLICERS) {
+//            // Make a new slicer active in the wave
+//            wave.spawnSlicer();
+//            // Reset frame counter
+//            frameCount = 0;
+//        }
+//
+//        // Close game if all slicers have finished traversing the polyline
+//        if (wave.getSpawnedSlicers() == MAX_SLICERS && wave.getSlicerCount() == 0) {
+//            Window.close();
+//        }
+//
+//        // Update all sprites, and remove them if they've finished
+//        wave.updateWave(input);
     }
 }

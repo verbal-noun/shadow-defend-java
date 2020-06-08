@@ -1,11 +1,14 @@
 import bagel.Input;
-import bagel.map.TiledMap;
 import bagel.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Wave {
+    // Different type of events
+    private static final String SPAWN = "spawn";
+    private static final String DELAY = "delay";
+    private static final int TOP = 0;
     //An attribute to determine when the wave has started and finished.
     private boolean waveStarted = false;
     private int spawnedSlicers = 0;
@@ -13,7 +16,8 @@ public class Wave {
     //The slicers and the path of the wave
     private final List<Slicer> slicers;
     private List<Point> polyline;
-    private List<String> events;
+    private List<Event> events;
+    private Event currEvent;
 
     public int getSpawnedSlicers() {
         return spawnedSlicers;
@@ -42,6 +46,8 @@ public class Wave {
         // Condition to ensure the wave activates only once
         if(!this.waveStarted) {
             this.waveStarted = true;
+            // Load the first event
+            loadEvent();
         }
     }
 
@@ -59,10 +65,30 @@ public class Wave {
                 slicers.remove(i);
             }
         }
-    }
+
+        // Update current event of the wave
+        if(waveStarted) {
+            // If current event is a delay event then pause
+            if(currEvent.getEventType().equals(DELAY)) {
+                currEvent.updateEvent();
+            }
+            // If it's a spawn event, add appropriate type of slicer when time
+            if(currEvent.getEventType().equals(SPAWN)) {
+                currEvent.updateEvent();
+                // When it's time to add a new slicer
+
+            }
+        }
+}
 
     // Add new in the wave event list
-    public void addEvent(String event) {
+    public void addEvent(Event event) {
         events.add(event);
+    }
+
+    // Load the next event in the event list as current event
+    private void loadEvent() {
+        // Process event appropriately
+        currEvent = events.get(TOP);
     }
 }

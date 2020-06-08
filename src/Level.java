@@ -12,9 +12,13 @@ public class Level {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
 
+    // Map attribute for the level
     private final TiledMap map;
     private final List<Point> polyline;
+    // File containing wave information
+    private static final String WAVE_FILE = "res/levels/waves.txt";
     public List<Wave> waves = new ArrayList<>();
+    // Player for the level
     private Player player;
 
     // Panels
@@ -35,7 +39,7 @@ public class Level {
     private void loadWave() {
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader("res/levels/waves.txt"));
+            reader = new BufferedReader(new FileReader(WAVE_FILE));
             String line = reader.readLine();
             while(line != null) {
                 // Process the wave line
@@ -49,7 +53,7 @@ public class Level {
                     waves.add(new Wave(polyline));
                 }
                 // Pass event information into the wave
-                waves.get(waveNo-1).addEvent(line.substring(index+1));
+                waves.get(waveNo-1).addEvent(new Event(line.substring(index+1).split(",")));
                 // Read the next line
                 line = reader.readLine();
             }
@@ -66,7 +70,13 @@ public class Level {
         statusPanel.renderPanel();
     }
 
+    //----------------------------------------- Panel related methods ------------------------------------------------//
     public void updateTime() {
         statusPanel.setTimeScale();
+    }
+
+    //----------------------------------------- Wave related methods -------------------------------------------------//
+    public void startLevel() {
+        waves.get(0).startWave();
     }
 }
