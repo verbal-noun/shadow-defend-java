@@ -100,7 +100,7 @@ public class ShadowDefend extends AbstractGame {
         frameCount += getTimescale();
 
         // Draw map from the top left of the window
-        level.render();
+        level.updateLevel(input);
         //System.out.println(level.waves.size());
 
         // Handle key presses

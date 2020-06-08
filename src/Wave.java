@@ -1,5 +1,7 @@
 import bagel.Input;
 import bagel.util.Point;
+import org.lwjgl.system.CallbackI;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,10 @@ public class Wave {
     //The slicers and the path of the wave
     private final List<Slicer> slicers;
     private List<Point> polyline;
-    private List<Event> events;
-    private Event currEvent;
+    private List<String> events;
+    private SpawnEvent spawnEvent;
+    private Event delayEvent;
+    private String currEvent;
 
     public int getSpawnedSlicers() {
         return spawnedSlicers;
@@ -68,27 +72,36 @@ public class Wave {
 
         // Update current event of the wave
         if(waveStarted) {
+
             // If current event is a delay event then pause
-            if(currEvent.getEventType().equals(DELAY)) {
-                currEvent.updateEvent();
+            if(currEvent.equals(DELAY)) {
+                delayEvent.updateEvent();
             }
             // If it's a spawn event, add appropriate type of slicer when time
-            if(currEvent.getEventType().equals(SPAWN)) {
-                currEvent.updateEvent();
+            if(currEvent.equals(SPAWN)) {
+                spawnEvent.updateEvent();
                 // When it's time to add a new slicer
-
+                if(spawnEvent.isAddSlicer()) {
+                    spawnSlicer();
+                }
             }
         }
 }
 
     // Add new in the wave event list
-    public void addEvent(Event event) {
+    public void addEvent(String event) {
         events.add(event);
     }
 
     // Load the next event in the event list as current event
     private void loadEvent() {
         // Process event appropriately
-        currEvent = events.get(TOP);
+        String[] eventInfo = events.get(TOP).split(",");
+        currEvent = eventInfo[TOP];
+        if(currEvent.equals(SPAWN)) {
+            spawnEvent = new SpawnEvent(eventInfo);
+        } else {
+            delayEvent = new Event(eventInfo);
+        }
     }
 }

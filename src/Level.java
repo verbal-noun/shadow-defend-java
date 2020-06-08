@@ -1,3 +1,4 @@
+import bagel.Input;
 import bagel.map.TiledMap;
 import bagel.util.Point;
 
@@ -53,7 +54,7 @@ public class Level {
                     waves.add(new Wave(polyline));
                 }
                 // Pass event information into the wave
-                waves.get(waveNo-1).addEvent(new Event(line.substring(index+1).split(",")));
+                waves.get(waveNo-1).addEvent(line.substring(index+1));
                 // Read the next line
                 line = reader.readLine();
             }
@@ -70,6 +71,13 @@ public class Level {
         statusPanel.renderPanel();
     }
 
+    public void updateLevel(Input input) {
+        // Render level
+        render();
+        // Update current wave
+        waves.get(0).updateWave(input);
+
+    }
     //----------------------------------------- Panel related methods ------------------------------------------------//
     public void updateTime() {
         statusPanel.setTimeScale();
