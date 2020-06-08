@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * ShadowDefend, a tower defence game.
  */
-public class ShadowDefend extends AbstractGame {
+public class TestGame extends AbstractGame {
 
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
@@ -31,11 +31,10 @@ public class ShadowDefend extends AbstractGame {
     private Wave wave;
     private Level level;
     private int levelNo;
-
     /**
      * Creates a new instance of the ShadowDefend game
      */
-    public ShadowDefend() {
+    public TestGame() {
         super(WIDTH, HEIGHT, "ShadowDefend");
         this.map = new TiledMap(MAP_FILE);
         this.polyline = map.getAllPolylines().get(0);
@@ -43,7 +42,6 @@ public class ShadowDefend extends AbstractGame {
         this.wave = new Wave(polyline);
         this.levelNo = 1;
         this.level = new Level(levelNo);
-
 
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
         // This fix is entirely optional
@@ -56,7 +54,7 @@ public class ShadowDefend extends AbstractGame {
      * @param args Optional command-line arguments
      */
     public static void main(String[] args) {
-        new ShadowDefend().run();
+        new TestGame().run();
     }
 
     public static int getTimescale() {
@@ -99,6 +97,7 @@ public class ShadowDefend extends AbstractGame {
 
         // Draw map from the top left of the window
         level.render();
+
         //System.out.println(level.waves.size());
 
         // Handle key presses

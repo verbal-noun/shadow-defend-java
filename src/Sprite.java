@@ -5,6 +5,10 @@ import bagel.util.Point;
 import bagel.util.Rectangle;
 import bagel.util.Vector2;
 
+/**
+ *  Sprite Abstract Class implementation taken from Project-1 Solution
+ *  I acknowledge the implementation of this class is not mine.
+ */
 public abstract class Sprite {
 
     private final Image image;
@@ -36,6 +40,6 @@ public abstract class Sprite {
     /**
      * Updates the Sprite. Default behaviour is to render the Sprite at its current position.
      */
-    public void update(Input input) { image.draw(getCenter().x, getCenter().y, new DrawOptions().setRotation(angle)); }
+    public void render() { image.draw(getCenter().x, getCenter().y, new DrawOptions().setRotation(angle)); }
 
 }

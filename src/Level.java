@@ -17,11 +17,15 @@ public class Level {
     public List<Wave> waves = new ArrayList<>();
     private Player player;
 
+    // Panels
+    private BuyPanel buyPanel;
+
     public Level(int currentLevel) {
         String MAP_FILE = String.format("res/levels/%s.tmx", currentLevel);
         this.map = new TiledMap(MAP_FILE);
         this.polyline = map.getAllPolylines().get(0);
         this.player = new Player();
+        this.buyPanel = new BuyPanel(500);
         // Load waves
         loadWave();
     }
@@ -55,5 +59,7 @@ public class Level {
 
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
+        // Draw the panels
+        buyPanel.renderPanel();
     }
 }

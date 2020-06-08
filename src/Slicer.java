@@ -30,7 +30,6 @@ public class Slicer extends Sprite{
         this.finished = false;
     }
 
-    @Override
     public void update(Input input) {
         if(finished) {
             return;
@@ -64,7 +63,8 @@ public class Slicer extends Sprite{
         super.move(distance.normalised().mul(SPEED * ShadowDefend.getTimescale()));
         // update current rotation angle to face target point
         setAngle(Math.atan2(targetPoint.y - currentPoint.y, targetPoint.x - currentPoint.x));
-        super.update(input);
+        //super.update(input);
+        render();
     }
 
     public boolean isFinished() {
