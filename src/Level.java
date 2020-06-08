@@ -19,6 +19,7 @@ public class Level {
 
     // Panels
     private BuyPanel buyPanel;
+    private StatusPanel statusPanel;
 
     public Level(int currentLevel) {
         String MAP_FILE = String.format("res/levels/%s.tmx", currentLevel);
@@ -26,6 +27,7 @@ public class Level {
         this.polyline = map.getAllPolylines().get(0);
         this.player = new Player();
         this.buyPanel = new BuyPanel(500);
+        this.statusPanel = new StatusPanel();
         // Load waves
         loadWave();
     }
@@ -61,5 +63,10 @@ public class Level {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         // Draw the panels
         buyPanel.renderPanel();
+        statusPanel.renderPanel();
+    }
+
+    public void updateTime() {
+        statusPanel.setTimeScale();
     }
 }

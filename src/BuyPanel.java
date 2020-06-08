@@ -9,6 +9,7 @@ import bagel.util.Rectangle;
 public class BuyPanel {
     // Background image of the panel and purchase items
     private static final String BG_IMAGE = "res/images/buypanel.png";
+    private static final String FONT_FILE = "res/fonts/DejaVuSans-Bold.ttf";
     private static final String TANK = "res/images/tank.png";
     private static final String SUPER_TANK = "res/images/supertank.png";
     private static final String AIR_SUPPORT = "res/images/airsupport.png";
@@ -61,7 +62,7 @@ public class BuyPanel {
 
     // Function to display the prices of purchase items
     private void renderPrices() {
-        Font font = new Font("res/fonts/DejaVuSans-Bold.ttf", 20);
+        Font font = new Font(FONT_FILE, 20);
         DrawOptions color = new DrawOptions();
         // Display the price of purchase items with appropriate colour
         color.setBlendColour((playerMoney >= TANK_COST) ? Colour.GREEN : Colour.RED);
@@ -76,13 +77,13 @@ public class BuyPanel {
 
     // Display the current money of the player
     private void renderMoney() {
-        Font font = new Font("res/fonts/DejaVuSans-Bold.ttf", 50);
+        Font font = new Font(FONT_FILE, 50);
         font.drawString("$" + playerMoney, 824, 65);
     }
 
     // Display the game controls
     private void renderKeys() {
-        Font font = new Font("res/fonts/DejaVuSans-Bold.ttf", 14);
+        Font font = new Font(FONT_FILE, 14);
         font.drawString("Key binds: ", KEY_W, 20);
         font.drawString(START, KEY_W, 45);
         font.drawString(SPEED_UP, KEY_W, 60);
