@@ -12,14 +12,15 @@ import java.util.Vector;
 public class Slicer extends Sprite{
 
     private static final String IMAGE_FILE = "res/images/slicer.png";
-    private static final double SPEED = 2;
-    private static final int DEF_HEALTH = 1;
-    private static final int REWARD = 2;
-    private static final int PENALTY = 1;
-    private final List<Point> polyline;
-    private int targetPointIndex;
-    private boolean finished;
-    private int health;
+    protected static final double SPEED = 2;
+    protected static final int DEF_HEALTH = 1;
+    protected static final int REWARD = 2;
+    protected static final int PENALTY = 1;
+    protected int health;
+
+    protected final List<Point> polyline;
+    protected int targetPointIndex;
+    protected boolean finished;
     /**
      * Creates a new Slicer
      *
@@ -31,6 +32,10 @@ public class Slicer extends Sprite{
         this.targetPointIndex = 1;
         this.finished = false;
         this.health = DEF_HEALTH;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public void update(Input input) {

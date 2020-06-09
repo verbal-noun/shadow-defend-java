@@ -45,7 +45,7 @@ public class TestGame extends AbstractGame {
 
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
         // This fix is entirely optional
-        new Slicer(polyline);
+        //new Slicer(polyline);
     }
 
     /**
@@ -116,7 +116,7 @@ public class TestGame extends AbstractGame {
         // Check if it is time to spawn a new slicer (and we have some left to spawn)
         if (wave.waveStatus() && frameCount / FPS >= SPAWN_DELAY && wave.getSpawnedSlicers() != MAX_SLICERS) {
             // Make a new slicer active in the wave
-            wave.spawnSlicer();
+            //wave.spawnSlicer();
             // Reset frame counter
             frameCount = 0;
         }

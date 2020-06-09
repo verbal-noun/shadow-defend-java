@@ -43,7 +43,7 @@ public class ShadowDefend extends AbstractGame {
 
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
         // This fix is entirely optional
-        new Slicer(polyline);
+        //new Slicer(polyline);
     }
 
     /**
