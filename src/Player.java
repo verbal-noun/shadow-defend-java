@@ -1,7 +1,14 @@
 public class Player {
+    private static final int MONEY = 500;
+    private static final int LIVES = 25;
     private int money;
-    private static int lives;
+    private int lives;
 
+    // Constructor
+    public Player() {
+        this.money = MONEY;
+        this.lives = LIVES;
+    }
 
     public int getMoney() {
         return money;
@@ -11,17 +18,9 @@ public class Player {
         this.money = money;
     }
 
-    public static int getLives() {
+    public int getLives() {
         return lives;
     }
 
-    public static void setLives(int lives) {
-        Player.lives = lives;
-    }
-
-    // Constructor
-    public Player() {
-        this.money = 500;
-        lives = 25;
-    }
+    public void setLives(int lives) { this.lives = lives; }
 }

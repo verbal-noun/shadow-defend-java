@@ -1,3 +1,4 @@
+import bagel.Image;
 import bagel.util.Point;
 
 public class Tower extends Sprite {
@@ -9,4 +10,7 @@ public class Tower extends Sprite {
         this.cost = cost;
     }
 
+    public Image getImage() { return this.image; }
+
+    public int getCost() { return cost; }
 }

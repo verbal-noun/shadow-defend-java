@@ -5,6 +5,9 @@ import bagel.util.Colour;
 import bagel.util.Point;
 import bagel.util.Rectangle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BuyPanel {
     // Background image of the panel and purchase items
@@ -32,6 +35,11 @@ public class BuyPanel {
     private final Tower tank;
     private final Tower superTank;
     private final Tower airSupport;
+    private List<Tower> purchaseItems;
+
+    public List<Tower> getPurchaseItems() {
+        return purchaseItems;
+    }
 
     // Attribute to keep track of player's current money
     private int playerMoney;
@@ -43,6 +51,8 @@ public class BuyPanel {
         this.superTank = new Tower(new Point(tank.getCenter().x + OFFSET_W, OFFSET_H), SUPER_TANK, 600);
         this.airSupport = new Tower(new Point(superTank.getCenter().x + OFFSET_W, OFFSET_H), AIR_SUPPORT, 500);
         this.playerMoney = money;
+        // Load items into list
+        loadItems();
     }
 
     public void renderPanel() {
@@ -88,5 +98,16 @@ public class BuyPanel {
         font.drawString(START, KEY_W, 45);
         font.drawString(SPEED_UP, KEY_W, 60);
         font.drawString(SPEED_DOWN, KEY_W, 75);
+    }
+
+    private void loadItems() {
+        purchaseItems = new ArrayList<>();
+        purchaseItems.add(tank);
+        purchaseItems.add(superTank);
+        purchaseItems.add(airSupport);
+    }
+
+    public Rectangle getCanvas() {
+        return canvas;
     }
 }
