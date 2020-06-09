@@ -7,6 +7,8 @@ public class SpawnEvent extends Event {
     private static final String SUPER_SLICER = "superslicer";
     private static final String MEGA_SLICER = "megaslicer";
     private static final String APEX_SLICER = "apexslicer";
+    private static final String IMAGE_FILE = "res/images/%s.png";
+
     private String slicerType;
     private int slicerCount;
 
@@ -48,20 +50,21 @@ public class SpawnEvent extends Event {
     }
 
     public Slicer generateSlicer(List<Point> polyline) {
+        String type = String.format(IMAGE_FILE, slicerType);
         if(slicerType.equals(SLICER)) {
-            return new Slicer(polyline);
+            return new Slicer(polyline, type);
         }
         // Add a super slicer
         else if(slicerType.equals(SUPER_SLICER)) {
-            return new Slicer(polyline);
+            return new Slicer(polyline, type);
         }
         // Add a mega slicer
         else if(slicerType.equals(MEGA_SLICER)) {
-            return new Slicer(polyline);
+            return new Slicer(polyline, type);
         }
         // Add an apex slicer
         else  {
-            return new Slicer(polyline);
+            return new Slicer(polyline, type);
         }
     }
 }

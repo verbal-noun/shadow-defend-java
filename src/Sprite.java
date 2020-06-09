@@ -11,7 +11,7 @@ import bagel.util.Vector2;
  */
 public abstract class Sprite {
 
-    private final Image image;
+    protected final Image image;
     private final Rectangle rect;
     private double angle;
 

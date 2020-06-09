@@ -16,9 +16,11 @@ public class Event {
 
     public void updateEvent() {
         frameCount += ShadowDefend.getTimescale();
+        //System.out.println(frameCount);
         // Update buffer time
         if(frameCount == FPS) {
             buffer -= 1;
+            frameCount = 0;
         }
 
         if(buffer <= 0) {

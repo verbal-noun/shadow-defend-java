@@ -12,7 +12,7 @@ import java.util.List;
 public class Level {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
-
+    private static final int TOP = 0;
     // Map attribute for the level
     private final TiledMap map;
     private final List<Point> polyline;
@@ -21,10 +21,10 @@ public class Level {
     public List<Wave> waves = new ArrayList<>();
     // Player for the level
     private Player player;
-
     // Panels
     private BuyPanel buyPanel;
     private StatusPanel statusPanel;
+    private boolean isFinished;
 
     public Level(int currentLevel) {
         String MAP_FILE = String.format("res/levels/%s.tmx", currentLevel);
@@ -33,6 +33,7 @@ public class Level {
         this.player = new Player();
         this.buyPanel = new BuyPanel(500);
         this.statusPanel = new StatusPanel();
+        this.isFinished = false;
         // Load waves
         loadWave();
     }
@@ -75,8 +76,20 @@ public class Level {
         // Render level
         render();
         // Update current wave
-        waves.get(0).updateWave(input);
-
+        if(waves.size() > 0) {
+            if (waves.get(TOP).isFinished()) {
+                // Load next wave
+                loadNextWave();
+            } else {
+                // Update the current wave
+                waves.get(TOP).updateWave(input);
+            }
+            // Signal end of wave if all waves are finished
+            if (waves.size() == 0) {
+                isFinished = true;
+                System.out.println("Level finished");
+            }
+        }
     }
     //----------------------------------------- Panel related methods ------------------------------------------------//
     public void updateTime() {
@@ -84,7 +97,10 @@ public class Level {
     }
 
     //----------------------------------------- Wave related methods -------------------------------------------------//
-    public void startLevel() {
-        waves.get(0).startWave();
+    public void startLevel() { waves.get(TOP).startWave(); }
+
+    private void loadNextWave() {
+        waves.remove(TOP);
+        System.out.println(waves.size());
     }
 }

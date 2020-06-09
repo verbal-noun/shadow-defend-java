@@ -22,6 +22,7 @@ public class Wave {
     private SpawnEvent spawnEvent;
     private Event delayEvent;
     private String currEvent;
+    private boolean isFinished;
 
     public int getSpawnedSlicers() {
         return spawnedSlicers;
@@ -31,17 +32,20 @@ public class Wave {
         return slicers.size();
     }
 
+    public boolean isFinished() { return isFinished; }
+
     //Constructor
     public Wave(List<Point> polyline) {
         // Load polyline points from the map to the wave
         this.polyline = polyline;
         this.slicers = new ArrayList<>();
         this.events = new ArrayList<>();
+        this.isFinished = false;
     }
 
     /* A method to initialise the wave of 5 slicers */
-    public void spawnSlicer() {
-        slicers.add(new Slicer(polyline));
+    public void spawnSlicer(Slicer newSlicer) {
+        slicers.add(newSlicer);
         spawnedSlicers += 1;
     }
 
@@ -72,17 +76,38 @@ public class Wave {
 
         // Update current event of the wave
         if(waveStarted) {
-
             // If current event is a delay event then pause
             if(currEvent.equals(DELAY)) {
-                delayEvent.updateEvent();
+                if(!delayEvent.eventStatus()) {
+                    // load the next event
+                    loadEvent();
+                } else {
+                    // update current event
+                    delayEvent.updateEvent();
+                }
             }
             // If it's a spawn event, add appropriate type of slicer when time
             if(currEvent.equals(SPAWN)) {
-                spawnEvent.updateEvent();
-                // When it's time to add a new slicer
-                if(spawnEvent.isAddSlicer()) {
-                    spawnSlicer();
+                if(!spawnEvent.eventStatus()) {
+                    // load the next event
+                    loadEvent();
+                } else {
+                    // update current event
+                    spawnEvent.updateEvent();
+                    // When it's time to add a new slicer
+                    if(spawnEvent.isAddSlicer()) {
+                        // Add the appropriate type of slicer
+                        spawnSlicer(spawnEvent.generateSlicer(polyline));
+                    }
+                }
+            }
+            //
+            if(events.size()==0 && slicers.size()==0) {
+                if(currEvent.equals(DELAY) && !delayEvent.eventStatus()) {
+                    isFinished = true;
+                    System.out.println(true);
+                } else if(currEvent.equals(SPAWN) && !spawnEvent.eventStatus()) {
+                    isFinished = true;
                 }
             }
         }
@@ -95,13 +120,19 @@ public class Wave {
 
     // Load the next event in the event list as current event
     private void loadEvent() {
-        // Process event appropriately
-        String[] eventInfo = events.get(TOP).split(",");
-        currEvent = eventInfo[TOP];
-        if(currEvent.equals(SPAWN)) {
-            spawnEvent = new SpawnEvent(eventInfo);
-        } else {
-            delayEvent = new Event(eventInfo);
+        // If there are more events to process
+        if(events.size() > 0) {
+            // Process event appropriately
+            String[] eventInfo = events.get(TOP).split(",");
+            currEvent = eventInfo[TOP];
+            if(currEvent.equals(SPAWN)) {
+                spawnEvent = new SpawnEvent(eventInfo);
+            } else {
+                delayEvent = new Event(eventInfo);
+                System.out.println("delay event");
+            }
+            // Remove old event from the list
+            events.remove(TOP);
         }
     }
 }

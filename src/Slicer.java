@@ -12,22 +12,25 @@ import java.util.Vector;
 public class Slicer extends Sprite{
 
     private static final String IMAGE_FILE = "res/images/slicer.png";
-    private static final double SPEED = 1;
-
+    private static final double SPEED = 2;
+    private static final int DEF_HEALTH = 1;
+    private static final int REWARD = 2;
+    private static final int PENALTY = 1;
     private final List<Point> polyline;
     private int targetPointIndex;
     private boolean finished;
-
+    private int health;
     /**
      * Creates a new Slicer
      *
      * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
      */
-    public Slicer(List<Point> polyline) {
-        super(polyline.get(0), IMAGE_FILE);
+    public Slicer(List<Point> polyline, String slicerType) {
+        super(polyline.get(0), slicerType);
         this.polyline = polyline;
         this.targetPointIndex = 1;
         this.finished = false;
+        this.health = DEF_HEALTH;
     }
 
     public void update(Input input) {
