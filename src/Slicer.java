@@ -17,7 +17,7 @@ public class Slicer extends Sprite{
     protected static final int REWARD = 2;
     protected static final int PENALTY = 1;
     protected int health;
-
+    protected double speed;
     protected final List<Point> polyline;
     protected int targetPointIndex;
     protected boolean finished;
@@ -32,6 +32,7 @@ public class Slicer extends Sprite{
         this.targetPointIndex = 1;
         this.finished = false;
         this.health = DEF_HEALTH;
+        this.speed = SPEED;
     }
 
     public int getHealth() {
@@ -54,7 +55,7 @@ public class Slicer extends Sprite{
         double magnitude = distance.length();
 
         // Check if we are close to target than our step size
-        if(magnitude < SPEED * ShadowDefend.getTimescale()) {
+        if(magnitude < speed * ShadowDefend.getTimescale()) {
             // Check if we have reached the end
             if(targetPointIndex == polyline.size() - 1) {
                 finished = true;
@@ -68,7 +69,7 @@ public class Slicer extends Sprite{
         // Move towards the target point
         // We do this by getting a unit vector in the direction of our target, and multiplying it
         // by the speed of the slicer (accounting for the timescale)
-        super.move(distance.normalised().mul(SPEED * ShadowDefend.getTimescale()));
+        super.move(distance.normalised().mul(speed * ShadowDefend.getTimescale()));
         // update current rotation angle to face target point
         setAngle(Math.atan2(targetPoint.y - currentPoint.y, targetPoint.x - currentPoint.x));
         //super.update(input);

@@ -11,12 +11,21 @@ public class Wave {
     private static final String SPAWN = "spawn";
     private static final String DELAY = "delay";
     private static final int TOP = 0;
+    // Type of slicers possible in a wave
+    private static final String SLICER = "slicer";
+    private static final String SUPER_SLICER = "superslicer";
+    private static final String MEGA_SLICER = "megaslicer";
+    private static final String APEX_SLICER = "apexslicer";
+    private static final String IMAGE_FILE = "res/images/%s.png";
     //An attribute to determine when the wave has started and finished.
     private boolean waveStarted = false;
     private int spawnedSlicers = 0;
 
     //The slicers and the path of the wave
     private final List<Slicer> slicers;
+    private final List<SuperSlicer> superSlicers;
+    private final List<MegaSlicer> megaSlicers;
+    private final List<ApexSlicer> apexSlicers;
     private List<Point> polyline;
     private List<String> events;
     private SpawnEvent spawnEvent;
@@ -39,14 +48,31 @@ public class Wave {
         // Load polyline points from the map to the wave
         this.polyline = polyline;
         this.slicers = new ArrayList<>();
+        this.superSlicers = new ArrayList<>();
+        this.megaSlicers = new ArrayList<>();
+        this.apexSlicers = new ArrayList<>();
         this.events = new ArrayList<>();
         this.isFinished = false;
     }
 
     /* A method to initialise the wave of 5 slicers */
-    public void spawnSlicer(Slicer newSlicer) {
-        slicers.add(newSlicer);
-        spawnedSlicers += 1;
+    public void spawnSlicer(String slicerType) {
+        String type = String.format(IMAGE_FILE, slicerType);
+        if(slicerType.equals(SLICER)) {
+            slicers.add(new Slicer(polyline, type));
+        }
+        // Add a super slicer
+        else if(slicerType.equals(SUPER_SLICER)) {
+            superSlicers.add(new SuperSlicer(polyline, type));
+        }
+        // Add a mega slicer
+        else if(slicerType.equals(MEGA_SLICER)) {
+            megaSlicers.add(new MegaSlicer(polyline, type));
+        }
+        // Add an apex slicer
+        else  {
+            apexSlicers.add(new ApexSlicer(polyline, type));
+        }
     }
 
     /* A method to start the wave when 'S' is pressed */
@@ -63,9 +89,7 @@ public class Wave {
 
     /* A method to update the wave's current status */
     public void updateWave(Input input) {
-        /* Set wave is estimated to finish at the end of update. This will be changed if any of
-         * the slicers are still active.
-         */
+        // Update the state of wave's regular slicers
         for (int i = slicers.size() - 1; i >= 0; i--) {
             Slicer s = slicers.get(i);
             s.update(input);
@@ -74,7 +98,34 @@ public class Wave {
             }
         }
 
-        // Update current event of the wave
+        // Update the state of wave's super slicers
+        for (int i = superSlicers.size() - 1; i >= 0; i--) {
+            SuperSlicer s = superSlicers.get(i);
+            s.update(input);
+            if (s.isFinished()) {
+                superSlicers.remove(i);
+            }
+        }
+
+        // Update the state of wave's mega slicers
+        for (int i = megaSlicers.size() - 1; i >= 0; i--) {
+            MegaSlicer s = megaSlicers.get(i);
+            s.update(input);
+            if (s.isFinished()) {
+                megaSlicers.remove(i);
+            }
+        }
+
+        // Update the state of wave's super slicers
+        for (int i = apexSlicers.size() - 1; i >= 0; i--) {
+            ApexSlicer s = apexSlicers.get(i);
+            s.update(input);
+            if (s.isFinished()) {
+                apexSlicers.remove(i);
+            }
+        }
+
+        // Update the current event of the wave
         if(waveStarted) {
             // If current event is a delay event then pause
             if(currEvent.equals(DELAY)) {
@@ -97,12 +148,14 @@ public class Wave {
                     // When it's time to add a new slicer
                     if(spawnEvent.isAddSlicer()) {
                         // Add the appropriate type of slicer
-                        spawnSlicer(spawnEvent.generateSlicer(polyline));
+                        spawnSlicer(spawnEvent.generateSlicer());
                     }
                 }
             }
-            //
-            if(events.size()==0 && slicers.size()==0) {
+            // if events list and slicer list is empty
+            if(events.size()==0 && slicers.size()==0 &&
+                    superSlicers.size()==0 && megaSlicers.size() == 0 && apexSlicers.size() == 0) {
+                // Check if current event is also finished or not
                 if(currEvent.equals(DELAY) && !delayEvent.eventStatus()) {
                     isFinished = true;
                     System.out.println(true);
