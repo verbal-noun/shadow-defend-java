@@ -21,6 +21,11 @@ public class Level {
     private static final int TANK = 0;
     private static final int SUPER_TANK = 1;
     private static final int AIR_SUPPORT = 2;
+    // Status messages
+    private static final Integer WIN = 0;
+    private static final Integer PLACING = 1;
+    private static final Integer WAVE = 2;
+    private static final Integer WAIT = 3;
     // Map attribute for the level
     private final TiledMap map;
     private final List<Point> polyline;
@@ -87,8 +92,10 @@ public class Level {
 
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
+        // Configure status panel appropriately
+        updateGameStatus();
         // Draw the panels
-        buyPanel.renderPanel(player.getMoney());
+        buyPanel.renderPanel();
         statusPanel.renderPanel();
         // Draw the towers
         renderTowers();
@@ -110,16 +117,31 @@ public class Level {
             if (waves.size() == 0) {
                 isFinished = true;
                 System.out.println("Level finished");
+                statusPanel.setGameStatus(WIN);
             }
         }
         // Control player interaction
         playerInteraction(input);
     }
     //----------------------------------------- Panel related methods ------------------------------------------------//
-    public void updateTime() {
+    // Update the status panel with proper information
+    private void updateGameStatus() {
+        // Status panel related configurations
         statusPanel.setTimeScale();
+        // Set the game status
+        if(itemSelected) {
+            statusPanel.setGameStatus(PLACING);
+        } else if (waves.get(TOP).waveStatus()) {
+            statusPanel.setGameStatus(WAVE);
+        } else if(!isFinished) {
+            statusPanel.setGameStatus(WAIT);
+        }
+        // Update player lives
+        statusPanel.setPlayerLives(player.getLives());
+        // Buy panel related configuration
+        buyPanel.setPlayerMoney(player.getMoney());
     }
-
+    // Method to enable tower purchase and placement
     private void playerInteraction(Input input) {
         // Point to track current position of the cursor
         Point currPos = new Point(input.getMouseX(), input.getMouseY());
@@ -204,13 +226,20 @@ public class Level {
         }
     }
     //----------------------------------------- Wave related methods -------------------------------------------------//
-    public void startLevel() { waves.get(TOP).startWave(); }
+    public void startLevel() {
+        if(!waves.get(TOP).waveStatus()) {
+            waves.get(TOP).startWave();
+        }
+    }
 
     private void loadNextWave() {
         waves.remove(TOP);
         statusPanel.increaseWave();
+        System.out.println(waves.get(TOP).waveStatus());
+        System.out.println(isFinished);
     }
 
+    //----------------------------------------- Tower related methods ------------------------------------------------//
     private void renderTowers() {
         // Tanks
         for(Tank T : tanks) {

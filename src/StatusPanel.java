@@ -55,22 +55,25 @@ public class StatusPanel {
             gameStatus = WIN;
         }
         // Signal player is placing tower
-        if(code == 1) {
+        else if(code == 1) {
             gameStatus = PLACING;
         }
         // Signal a wave is in progress
-        if(code == 2) {
+        else if(code == 2) {
             gameStatus = WAVE;
         }
         // Signal waiting for player action
-        if(code == 3) {
+        else if(code == 3) {
             gameStatus = WAIT;
+        }
+        else {
+            System.out.println("Invalid code");
         }
     }
 
     // update player lives
-    public void setPlayerLives(int hitPoints) {
-        playerLives -= hitPoints;
+    public void setPlayerLives(int lives) {
+        playerLives = lives;
     }
 
     // update wave no

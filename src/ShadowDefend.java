@@ -65,7 +65,7 @@ public class ShadowDefend extends AbstractGame {
     private void increaseTimescale() {
         timescale++;
         // Update status panel
-        level.updateTime();
+        //level.updateTime();
     }
 
     /**
@@ -76,7 +76,7 @@ public class ShadowDefend extends AbstractGame {
             timescale--;
         }
         // Update status panel
-        level.updateTime();
+        //level.updateTime();
     }
 
     /**
