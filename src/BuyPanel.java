@@ -55,7 +55,7 @@ public class BuyPanel {
         loadItems();
     }
 
-    public void renderPanel() {
+    public void renderPanel(int money) {
         // Draw the background
         background.drawFromTopLeft(0, 0);
         // Render purchase items
@@ -65,7 +65,7 @@ public class BuyPanel {
         // Display prices with appropriate colour
         renderPrices();
         // Display player's current money
-        renderMoney();
+        renderMoney(money);
         // Display game controls
         renderKeys();
     }
@@ -86,7 +86,8 @@ public class BuyPanel {
     }
 
     // Display the current money of the player
-    private void renderMoney() {
+    private void renderMoney(int money) {
+        this.playerMoney = money;
         Font font = new Font(FONT_FILE, 50);
         font.drawString("$" + playerMoney, 824, 65);
     }

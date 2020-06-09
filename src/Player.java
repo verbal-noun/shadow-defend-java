@@ -14,8 +14,8 @@ public class Player {
         return money;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setMoney(int amount) {
+        money -= amount;
     }
 
     public int getLives() {

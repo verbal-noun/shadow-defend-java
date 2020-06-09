@@ -26,7 +26,7 @@ public class Level {
     private final List<Point> polyline;
     // File containing wave information
     private static final String WAVE_FILE = "res/levels/waves.txt";
-    public List<Wave> waves = new ArrayList<>();
+    private List<Wave> waves = new ArrayList<>();
     // Player for the level
     private Player player;
     // Panels
@@ -88,8 +88,10 @@ public class Level {
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         // Draw the panels
-        buyPanel.renderPanel();
+        buyPanel.renderPanel(player.getMoney());
         statusPanel.renderPanel();
+        // Draw the towers
+        renderTowers();
     }
 
     public void updateLevel(Input input) {
@@ -128,7 +130,9 @@ public class Level {
                 Tower T = purchaseItems.get(i);
                 if(T.getRect().intersects(new Point(input.getMouseX(), input.getMouseY()))) {
                     selectedItem = i;
-                    itemSelected = true;
+                    if(player.getMoney() >= purchaseItems.get(selectedItem).getCost()) {
+                        itemSelected = true;
+                    }
                 }
             }
             // If item was selected previously, try to place it
@@ -202,5 +206,23 @@ public class Level {
     //----------------------------------------- Wave related methods -------------------------------------------------//
     public void startLevel() { waves.get(TOP).startWave(); }
 
-    private void loadNextWave() { waves.remove(TOP); }
+    private void loadNextWave() {
+        waves.remove(TOP);
+        statusPanel.increaseWave();
+    }
+
+    private void renderTowers() {
+        // Tanks
+        for(Tank T : tanks) {
+            T.render();
+        }
+        // Super tanks
+        for(SuperTank T : superTanks) {
+            T.render();
+        }
+        // Render Airplane
+        for(AirSupport T : airSupport) {
+            T.render();
+        }
+    }
 }
