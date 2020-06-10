@@ -30,10 +30,12 @@ public class AirSupport extends Tower {
             // Fly vertically
             pos = new Point(point.x, 0);
             flyDirection = FLYING_VERTICAL;
+            this.angle = Math.toRadians(180);
         } else {
             // Fly horizontally
             pos = new Point(0, point.y);
             flyDirection = FLYING_HORIZONTAL;
+            this.angle = Math.toRadians(90);
         }
         return pos;
     }
