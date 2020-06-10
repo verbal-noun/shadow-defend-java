@@ -109,6 +109,7 @@ public class Level {
     }
 
     public void updateLevel(Input input) {
+
         // Render level
         render();
         // Update current wave
@@ -120,12 +121,13 @@ public class Level {
                 // Update the current wave
                 waves.get(TOP).updateWave(input);
             }
+        }
             // Signal end of wave if all waves are finished
-            if (waves.size() == 0) {
-                isFinished = true;
-                System.out.println("Level finished");
-                statusPanel.setGameStatus(WIN);
-            }
+        if (waves.size() == 0) {
+            isFinished = true;
+            System.out.println("Level finished");
+            statusPanel.setGameStatus(WIN);
+            return;
         }
         // Update airplane position if any
         flyAirplanes();
@@ -144,7 +146,7 @@ public class Level {
         // Set the game status
         if(itemSelected) {
             statusPanel.setGameStatus(PLACING);
-        } else if (waves.get(TOP).waveStatus()) {
+        } else if (waves.size() > 0 && waves.get(TOP).waveStatus()) {
             statusPanel.setGameStatus(WAVE);
         } else if(!isFinished) {
             statusPanel.setGameStatus(WAIT);
@@ -250,7 +252,6 @@ public class Level {
     private void loadNextWave() {
         waves.remove(TOP);
         statusPanel.increaseWave();
-        System.out.println(isFinished);
     }
 
     //----------------------------------------- Tower related methods ------------------------------------------------//

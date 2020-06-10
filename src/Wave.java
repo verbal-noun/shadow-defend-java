@@ -160,7 +160,6 @@ public class Wave {
                 // Check if current event is also finished or not
                 if(currEvent.equals(DELAY) && !delayEvent.eventStatus()) {
                     isFinished = true;
-                    System.out.println(true);
                 } else if(currEvent.equals(SPAWN) && !spawnEvent.eventStatus()) {
                     isFinished = true;
                 }
