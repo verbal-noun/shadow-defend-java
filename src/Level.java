@@ -4,6 +4,8 @@ import bagel.MouseButtons;
 import bagel.Window;
 import bagel.map.TiledMap;
 import bagel.util.Point;
+import bagel.util.Vector2;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,6 +22,7 @@ public class Level {
     private static final int TANK = 0;
     private static final int SUPER_TANK = 1;
     private static final int AIR_SUPPORT = 2;
+    private static final int HORIZONTAL = 90;
     // Status messages
     private static final Integer WIN = 0;
     private static final Integer PLACING = 1;
@@ -29,7 +32,7 @@ public class Level {
     private final TiledMap map;
     private final List<Point> polyline;
     // File containing wave information
-    private static final String WAVE_FILE = "res/levels/waves.txt";
+    private static final String WAVE_FILE = "res/levels/test-waves.txt";
     private List<Wave> waves = new ArrayList<>();
     // Player for the level
     private Player player;
@@ -46,6 +49,7 @@ public class Level {
     private List<AirSupport> airSupport;
     private int planeCount;
     private List<Explosive> explosives;
+    private Wave currWave;
 
     // Constructor
     public Level(int currentLevel) {
@@ -127,6 +131,8 @@ public class Level {
         flyAirplanes();
         //check for live explosives
         updateExplosive();
+        // Attack enemies when in range and waves remaining
+        if(waves.size() > 0) { attack(); }
         // Control player interaction
         playerInteraction(input);
     }
@@ -234,12 +240,13 @@ public class Level {
         }
     }
     //----------------------------------------- Wave related methods -------------------------------------------------//
+    // Initiate the game level
     public void startLevel() {
         if(!waves.get(TOP).waveStatus()) {
             waves.get(TOP).startWave();
         }
     }
-
+    // Load next wave of the level if any
     private void loadNextWave() {
         waves.remove(TOP);
         statusPanel.increaseWave();
@@ -247,6 +254,7 @@ public class Level {
     }
 
     //----------------------------------------- Tower related methods ------------------------------------------------//
+    // Draw the towers of the level
     private void renderTowers() {
         // Tanks
         for(Tank T : tanks) {
@@ -265,7 +273,7 @@ public class Level {
             E.render();
         }
     }
-
+    // Fly the planes purchased by the player
     private void flyAirplanes() {
         for(int i = airSupport.size() - 1; i >= 0; i--) {
             AirSupport plane = airSupport.get(i);
@@ -280,7 +288,7 @@ public class Level {
             }
         }
     }
-
+    // Update the status of level's explosives
     private void updateExplosive() {
         for(int i = explosives.size()-1; i >= 0; i--) {
             Explosive E = explosives.get(i);
@@ -290,6 +298,54 @@ public class Level {
 
                 // remove explosive
                 explosives.remove(i);
+            }
+        }
+    }
+    // Method to fire at enemies when in range
+    private void attack() {
+        // Position and fire tanks
+        for(Tank tank : tanks) {
+            // Position tank towards enemy in range
+            detectEnemy(tank);
+        }
+        // Position and fire tanks
+        for(SuperTank supTank : superTanks) {
+            // Position tank towards enemy in range
+            detectEnemy(supTank);
+        }
+    }
+
+    private <T extends Tower> void detectEnemy(T tank) {
+        tank.setEnemyDetected(false);
+        // Load all the apex slicers of the wave if any
+        searchEnemy(waves.get(TOP).getApexSlicers(), tank);
+        // load all the mega slicers of the wave if any
+        if(!tank.isEnemyDetected()) {
+            searchEnemy(waves.get(TOP).getSuperSlicers(), tank);
+        }
+        searchEnemy(waves.get(TOP).getMegaSlicers(), tank);
+        // Load all the super slicers of the wave if any
+        if(!tank.isEnemyDetected()) {
+            searchEnemy(waves.get(TOP).getSuperSlicers(), tank);
+        }
+        // Load all the regular slicers if any
+        if(!tank.isEnemyDetected()) {
+            searchEnemy(waves.get(TOP).getSlicers(), tank);
+        }
+
+    }
+    // Method to detect enemy in range
+    private <E extends Sprite, T extends Tower> void searchEnemy(List<E> enemyList, T tower) {
+        // Determine if enemy exists within range of tower
+        for(E enemy : enemyList) {
+            Vector2 distance = enemy.getCenter().asVector().sub(tower.getCenter().asVector());
+            if(distance.length() <= tower.getRadius()) {
+                // Signal enemy is detected
+                tower.setEnemyDetected(true);
+                // Turn tower towards enemy
+                double angle = Math.atan2(enemy.getCenter().y - tower.getCenter().y,
+                        enemy.getCenter().x - tower.getCenter().x);
+                tower.setAngle(angle + HORIZONTAL);
             }
         }
     }

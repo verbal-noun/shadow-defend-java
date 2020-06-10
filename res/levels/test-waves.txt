@@ -1,3 +1,4 @@
-1,spawn,1,apexslicer,1000
-1,delay,2500
 1,spawn,1,slicer,1000
+1,delay,2500
+2,spawn,2,slicer,1000
+3,spawn,3,slicer, 1000

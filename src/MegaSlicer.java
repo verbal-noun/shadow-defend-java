@@ -1,6 +1,4 @@
-import bagel.Input;
 import bagel.util.Point;
-import bagel.util.Vector2;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class MegaSlicer extends SuperSlicer {
         super(polyline, slicerType);
         this.health = super.getHealth() * FACTOR;
         this.reward = MEGA_REWARD;
-        this.penaly = super.getPenaly() * CHILD_NUM;
+        this.penalty = super.getPenalty() * CHILD_NUM;
     }
 
     public double getSpeed() {

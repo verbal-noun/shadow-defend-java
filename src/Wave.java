@@ -58,20 +58,22 @@ public class Wave {
     /* A method to initialise the wave of 5 slicers */
     public void spawnSlicer(String slicerType) {
         String type = String.format(IMAGE_FILE, slicerType);
-        if(slicerType.equals(SLICER)) {
-            slicers.add(new Slicer(polyline, type));
-        }
-        // Add a super slicer
-        else if(slicerType.equals(SUPER_SLICER)) {
-            superSlicers.add(new SuperSlicer(polyline, type));
-        }
-        // Add a mega slicer
-        else if(slicerType.equals(MEGA_SLICER)) {
-            megaSlicers.add(new MegaSlicer(polyline, type));
-        }
-        // Add an apex slicer
-        else  {
-            apexSlicers.add(new ApexSlicer(polyline, type));
+        switch (slicerType) {
+            case SLICER:
+                slicers.add(new Slicer(polyline, type));
+                break;
+            // Add a super slicer
+            case SUPER_SLICER:
+                superSlicers.add(new SuperSlicer(polyline, type));
+                break;
+            // Add a mega slicer
+            case MEGA_SLICER:
+                megaSlicers.add(new MegaSlicer(polyline, type));
+                break;
+            // Add an apex slicer
+            default:
+                apexSlicers.add(new ApexSlicer(polyline, type));
+                break;
         }
     }
 
@@ -188,4 +190,11 @@ public class Wave {
             events.remove(TOP);
         }
     }
+
+    // Methods to access the existing slicers of a wave
+    public List<Slicer> getSlicers() { return slicers; }
+    public List<SuperSlicer> getSuperSlicers() { return superSlicers; }
+    public List<MegaSlicer> getMegaSlicers() { return megaSlicers; }
+    public List<ApexSlicer> getApexSlicers() { return apexSlicers; }
+
 }

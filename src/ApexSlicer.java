@@ -1,6 +1,4 @@
-import bagel.Input;
 import bagel.util.Point;
-import bagel.util.Vector2;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class ApexSlicer extends MegaSlicer {
         this.reward = APEX_REWARD;
         this.speed = super.getSpeed() / FACTOR;
         System.out.println(speed);
-        this.penaly = super.getPenaly() * CHILD_NUM;
+        this.penalty = super.getPenalty() * CHILD_NUM;
     }
 
 }

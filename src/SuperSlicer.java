@@ -1,17 +1,14 @@
-import bagel.Input;
 import bagel.util.Point;
-import bagel.util.Vector2;
 
 import java.util.List;
 
 public class SuperSlicer extends Slicer {
 
-   private static final String IMAGE_FILE = "res/images/slicer.png";
-   private static final double FACTOR = (3 / 4);
+   private static final double FACTOR = 3.0 / 4.0;
    private static final int SUPER_REWARD = 15;
    private static final int CHILD_NUM = 2;
    protected int reward;
-   protected int penaly;
+   protected int penalty;
 
 
     /**
@@ -23,10 +20,10 @@ public class SuperSlicer extends Slicer {
         super(polyline, imageSrc);
         this.reward = SUPER_REWARD;
         this.speed = SPEED * FACTOR;
-        this.penaly = PENALTY * CHILD_NUM;
+        this.penalty = PENALTY * CHILD_NUM;
     }
 
-    public int getPenaly() {
-        return penaly;
+    public int getPenalty() {
+        return penalty;
     }
 }
