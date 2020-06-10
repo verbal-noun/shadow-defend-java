@@ -45,6 +45,7 @@ public class Level {
     private List<Tank> tanks;
     private List<SuperTank> superTanks;
     private List<AirSupport> airSupport;
+    private int planeCount;
 
     // Constructor
     public Level(int currentLevel) {
@@ -63,6 +64,7 @@ public class Level {
         tanks = new ArrayList<>();
         superTanks = new ArrayList<>();
         airSupport = new ArrayList<>();
+        this.planeCount = 0;
     }
 
     private void loadWave() {
@@ -120,6 +122,8 @@ public class Level {
                 statusPanel.setGameStatus(WIN);
             }
         }
+        // Update airplane position if any
+        flyAirplanes();
         // Control player interaction
         playerInteraction(input);
     }
@@ -176,7 +180,8 @@ public class Level {
             }
             if(selectedItem == AIR_SUPPORT) {
                 // Purchase a plane
-                AirSupport newItem = new AirSupport(currPos);
+                planeCount += 1;
+                AirSupport newItem = new AirSupport(currPos, planeCount);
                 airSupport.add(newItem);
                 // Deduct money from player
                 player.setMoney(newItem.getCost());
@@ -252,6 +257,16 @@ public class Level {
         // Render Airplane
         for(AirSupport T : airSupport) {
             T.render();
+        }
+    }
+
+    private void flyAirplanes() {
+        for(int i = airSupport.size() - 1; i >= 0; i--) {
+            AirSupport plane = airSupport.get(i);
+            plane.update();
+            if(!plane.getStatus()) {
+                airSupport.remove(i);
+            }
         }
     }
 }

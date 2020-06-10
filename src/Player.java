@@ -1,5 +1,5 @@
 public class Player {
-    private static final int MONEY = 500;
+    private static final int MONEY = 10000;
     private static final int LIVES = 25;
     private int money;
     private int lives;

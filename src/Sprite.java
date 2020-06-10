@@ -11,9 +11,9 @@ import bagel.util.Vector2;
  */
 public abstract class Sprite {
 
-    protected final Image image;
-    private final Rectangle rect;
-    private double angle;
+    protected Image image;
+    protected Rectangle rect;
+    protected double angle;
 
     /**
      * Creates a new Sprite (game entity)
