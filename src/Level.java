@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.ToIntBiFunction;
 
 
 public class Level {
@@ -46,6 +45,7 @@ public class Level {
     private List<SuperTank> superTanks;
     private List<AirSupport> airSupport;
     private int planeCount;
+    private List<Explosive> explosives;
 
     // Constructor
     public Level(int currentLevel) {
@@ -65,6 +65,7 @@ public class Level {
         superTanks = new ArrayList<>();
         airSupport = new ArrayList<>();
         this.planeCount = 0;
+        this.explosives = new ArrayList<>();
     }
 
     private void loadWave() {
@@ -95,7 +96,7 @@ public class Level {
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         // Configure status panel appropriately
-        updateGameStatus();
+        updatePanels();
         // Draw the panels
         buyPanel.renderPanel();
         statusPanel.renderPanel();
@@ -124,12 +125,14 @@ public class Level {
         }
         // Update airplane position if any
         flyAirplanes();
+        //check for live explosives
+        updateExplosive();
         // Control player interaction
         playerInteraction(input);
     }
     //----------------------------------------- Panel related methods ------------------------------------------------//
     // Update the status panel with proper information
-    private void updateGameStatus() {
+    private void updatePanels() {
         // Status panel related configurations
         statusPanel.setTimeScale();
         // Set the game status
@@ -240,7 +243,6 @@ public class Level {
     private void loadNextWave() {
         waves.remove(TOP);
         statusPanel.increaseWave();
-        System.out.println(waves.get(TOP).waveStatus());
         System.out.println(isFinished);
     }
 
@@ -258,6 +260,10 @@ public class Level {
         for(AirSupport T : airSupport) {
             T.render();
         }
+        // Render existing explosives
+        for(Explosive E: explosives) {
+            E.render();
+        }
     }
 
     private void flyAirplanes() {
@@ -266,6 +272,24 @@ public class Level {
             plane.update();
             if(!plane.getStatus()) {
                 airSupport.remove(i);
+            }
+            // Check if plane is dropping explosives or not
+            if(plane.getLaunchStatus()) {
+                // Add explosive in the current location of the plane
+                explosives.add(new Explosive(plane.getCenter()));
+            }
+        }
+    }
+
+    private void updateExplosive() {
+        for(int i = explosives.size()-1; i >= 0; i--) {
+            Explosive E = explosives.get(i);
+            E.update();
+            if(E.isActive()) {
+                // Deal damage
+
+                // remove explosive
+                explosives.remove(i);
             }
         }
     }

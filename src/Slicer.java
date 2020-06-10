@@ -11,7 +11,6 @@ import java.util.Vector;
 
 public class Slicer extends Sprite{
 
-    private static final String IMAGE_FILE = "res/images/slicer.png";
     protected static final double SPEED = 2;
     protected static final int DEF_HEALTH = 1;
     protected static final int REWARD = 2;

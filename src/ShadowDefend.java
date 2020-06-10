@@ -114,20 +114,5 @@ public class ShadowDefend extends AbstractGame {
             decreaseTimescale();
         }
 
-//        // Check if it is time to spawn a new slicer (and we have some left to spawn)
-//        if (wave.waveStatus() && frameCount / FPS >= SPAWN_DELAY && wave.getSpawnedSlicers() != MAX_SLICERS) {
-//            // Make a new slicer active in the wave
-//            wave.spawnSlicer();
-//            // Reset frame counter
-//            frameCount = 0;
-//        }
-//
-//        // Close game if all slicers have finished traversing the polyline
-//        if (wave.getSpawnedSlicers() == MAX_SLICERS && wave.getSlicerCount() == 0) {
-//            Window.close();
-//        }
-//
-//        // Update all sprites, and remove them if they've finished
-//        wave.updateWave(input);
     }
 }
