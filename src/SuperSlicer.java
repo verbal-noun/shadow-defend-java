@@ -2,6 +2,9 @@ import bagel.util.Point;
 
 import java.util.List;
 
+/**
+ * The type Super slicer.
+ */
 public class SuperSlicer extends Slicer {
 
    private static final double FACTOR = 3.0 / 4.0;
@@ -12,6 +15,7 @@ public class SuperSlicer extends Slicer {
      * Creates a new Super Slicer
      *
      * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
+     * @param imageSrc the image src
      */
     public SuperSlicer(List<Point> polyline, String imageSrc) {
         super(polyline, imageSrc);

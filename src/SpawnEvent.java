@@ -2,12 +2,20 @@ import bagel.util.Point;
 
 import java.util.List;
 
+/**
+ * The type Spawn event.
+ */
 public class SpawnEvent extends Event {
     private String slicerType;
     private int slicerCount;
 
     private boolean addSlicer;
 
+    /**
+     * Instantiates a new Spawn event.
+     *
+     * @param info the info
+     */
     public SpawnEvent(String[] info) {
         super(info);
         this.buffer = Double.parseDouble(info[3]) / FACTOR;
@@ -17,6 +25,11 @@ public class SpawnEvent extends Event {
         this.addSlicer = false;
     }
 
+    /**
+     * Is add slicer boolean.
+     *
+     * @return the boolean
+     */
     public boolean isAddSlicer() {
         return addSlicer;
     }
@@ -43,6 +56,11 @@ public class SpawnEvent extends Event {
         frameCount += ShadowDefend.getTimescale();
     }
 
+    /**
+     * Generate slicer string.
+     *
+     * @return the string
+     */
     public String generateSlicer() {
         return slicerType;
     }

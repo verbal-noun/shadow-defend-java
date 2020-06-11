@@ -1,11 +1,12 @@
 import bagel.Input;
 import bagel.util.Point;
-import org.lwjgl.system.CallbackI;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Wave.
+ */
 public class Wave {
     // Different type of events
     private static final String SPAWN = "spawn";
@@ -32,7 +33,13 @@ public class Wave {
     private boolean isFinished;
     private Player player;
 
-    //Constructor
+    /**
+     * Instantiates a new Wave.
+     *
+     * @param polyline the polyline
+     * @param player   the player
+     */
+//Constructor
     public Wave(List<Point> polyline, Player player) {
         // Load polyline points from the map to the wave
         this.polyline = polyline;
@@ -45,8 +52,18 @@ public class Wave {
         this.player = player;
     }
 
+    /**
+     * Is finished boolean.
+     *
+     * @return the boolean
+     */
     public boolean isFinished() { return isFinished; }
 
+    /**
+     * Spawn slicer.
+     *
+     * @param slicerType the slicer type
+     */
     /* A method to initialise the wave of 5 slicers */
     public void spawnSlicer(String slicerType) {
         String type = String.format(IMAGE_FILE, slicerType);
@@ -69,6 +86,9 @@ public class Wave {
         }
     }
 
+    /**
+     * Start wave.
+     */
     /* A method to start the wave when 'S' is pressed */
     public void startWave() {
         // Condition to ensure the wave activates only once
@@ -79,8 +99,18 @@ public class Wave {
         }
     }
 
+    /**
+     * Wave status boolean.
+     *
+     * @return the boolean
+     */
     public boolean waveStatus() { return waveStarted; }
 
+    /**
+     * Update wave.
+     *
+     * @param input the input
+     */
     /* A method to update the wave's current status */
     public void updateWave(Input input) {
         // Update the state of wave's regular slicers
@@ -132,7 +162,12 @@ public class Wave {
         }
 }
 
-    // Add new in the wave event list
+    /**
+     * Add event.
+     *
+     * @param event the event
+     */
+// Add new in the wave event list
     public void addEvent(String event) {
         events.add(event);
     }
@@ -155,10 +190,33 @@ public class Wave {
         }
     }
 
-    // Methods to access the existing slicers of a wave
+    /**
+     * Gets slicers.
+     *
+     * @return the slicers
+     */
+// Methods to access the existing slicers of a wave
     public List<Slicer> getSlicers() { return slicers; }
+
+    /**
+     * Gets super slicers.
+     *
+     * @return the super slicers
+     */
     public List<SuperSlicer> getSuperSlicers() { return superSlicers; }
+
+    /**
+     * Gets mega slicers.
+     *
+     * @return the mega slicers
+     */
     public List<MegaSlicer> getMegaSlicers() { return megaSlicers; }
+
+    /**
+     * Gets apex slicers.
+     *
+     * @return the apex slicers
+     */
     public List<ApexSlicer> getApexSlicers() { return apexSlicers; }
 
     // Method to update different kinds of slicers

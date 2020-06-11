@@ -5,6 +5,9 @@ import bagel.util.Colour;
 import bagel.util.Point;
 import bagel.util.Rectangle;
 
+/**
+ * The type Status panel.
+ */
 public class StatusPanel {
 
     private static final int DEFAULT_LIVES = 25;
@@ -25,7 +28,9 @@ public class StatusPanel {
     private static final Image background = new Image(BG_IMAGE);
     private static Rectangle canvas = background.getBoundingBoxAt(new Point(0, 0));;
 
-    // Constructor
+    /**
+     * Instantiates a new Status panel.
+     */
     public StatusPanel() {
         this.waveNo = 1;
         this.playerLives = DEFAULT_LIVES;
@@ -33,7 +38,9 @@ public class StatusPanel {
         this.gameStatus = WAIT;
     }
 
-    // Render the status panel
+    /**
+     * Render panel.
+     */
     public void renderPanel() {
         // Draw background image
         background.draw(512, 738);
@@ -48,7 +55,11 @@ public class StatusPanel {
         font.drawString("Lives: " + playerLives, 934, 706);
     }
 
-    // Update game status
+    /**
+     * Sets game status.
+     *
+     * @param code the code
+     */
     public void setGameStatus(int code) {
         // Signal game has won
         if(code == 0) {
@@ -71,16 +82,25 @@ public class StatusPanel {
         }
     }
 
-    // update player lives
+    /**
+     * Sets player lives.
+     *
+     * @param lives the lives
+     */
     public void setPlayerLives(int lives) {
         playerLives = lives;
     }
 
-    // update wave no
+    /**
+     * Increase wave.
+     */
     public void increaseWave() {
         waveNo += 1;
     }
 
+    /**
+     * Sets time scale.
+     */
     public void setTimeScale() {
         this.timeScale = ShadowDefend.getTimescale();
     }

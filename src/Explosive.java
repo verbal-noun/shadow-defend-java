@@ -1,5 +1,8 @@
 import bagel.util.Point;
 
+/**
+ * The type Explosive.
+ */
 public class Explosive extends Sprite {
     private static final String IMAGE = "res/images/explosive.png";
     private static final double DETONATE_PERIOD = 2;
@@ -11,13 +14,17 @@ public class Explosive extends Sprite {
     /**
      * Creates a new Sprite (game entity)
      *
-     * @param point    The starting point for the entity
+     * @param point The starting point for the entity
      */
     public Explosive(Point point) {
         super(point, IMAGE);
         this.frameCount = 0;
         this.status = false;
     }
+
+    /**
+     * Update.
+     */
     public void update() {
         frameCount += ShadowDefend.getTimescale();
         // If countdown has finished then detonate the explosive
@@ -29,10 +36,25 @@ public class Explosive extends Sprite {
     private void detonate() {
         status = true;
     }
-    // Method to check if explosive is active or not
+
+    /**
+     * Is active boolean.
+     *
+     * @return the boolean
+     */
     public boolean isActive() {return status;}
-    // Get the effect area of the explosive
+
+    /**
+     * Gets radius.
+     *
+     * @return the radius
+     */
     public int getRadius() {return RAIDUS;}
-    // Retrieve the damage down by the explosive
+
+    /**
+     * Deal damage int.
+     *
+     * @return the int
+     */
     public int dealDamage() { return DAMAGE; }
 }

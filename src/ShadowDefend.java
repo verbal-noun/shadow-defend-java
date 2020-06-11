@@ -15,7 +15,10 @@ public class ShadowDefend extends AbstractGame {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
     private static final String MAP_FILE = "res/levels/1.tmx";
-    // Change to suit system specifications. This could be
+    /**
+     * The constant FPS.
+     */
+// Change to suit system specifications. This could be
     // dynamically determined but that is out of scope.
     public static final double FPS = 60;
     // The spawn delay (in seconds) to spawn slicers
@@ -56,6 +59,11 @@ public class ShadowDefend extends AbstractGame {
         new ShadowDefend().run();
     }
 
+    /**
+     * Gets timescale.
+     *
+     * @return the timescale
+     */
     public static int getTimescale() {
         return timescale;
     }

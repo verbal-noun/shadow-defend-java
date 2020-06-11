@@ -4,6 +4,9 @@ import bagel.util.Vector2;
 
 import java.util.Random;
 
+/**
+ * The type Air support.
+ */
 public class AirSupport extends Tower {
     private static final int PRICE = 500;
     private static final String IMAGE = "res/images/airsupport.png";
@@ -23,7 +26,12 @@ public class AirSupport extends Tower {
     private boolean launchStatus;
     private int frameCount;
 
-    // Constructor
+    /**
+     * Instantiates a new Air support.
+     *
+     * @param point   the point
+     * @param planeNo the plane no
+     */
     public AirSupport(Point point, int planeNo) {
         super(point, IMAGE, PRICE);
         // Set the direction of the plane
@@ -87,11 +95,23 @@ public class AirSupport extends Tower {
         }
     }
 
-    // Method to determine if plane is still active in the map or not
+    /**
+     * Gets status.
+     *
+     * @return the status
+     */
     public boolean getStatus() { return status; }
-    // Method to signal if plane is dropping explosives or not
+
+    /**
+     * Gets launch status.
+     *
+     * @return the launch status
+     */
     public boolean getLaunchStatus() {  return launchStatus; }
-    // Method to delegate dropping explosives onto the map
+
+    /**
+     * Drop explosive.
+     */
     public void dropExplosive() {
         // Check if drop time is reached or not
         launchStatus = true;

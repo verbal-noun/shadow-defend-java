@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Level.
+ */
 public class Level {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
@@ -55,7 +58,11 @@ public class Level {
     private int waveNo;
     private boolean playerKilled;
 
-    // Constructor
+    /**
+     * Instantiates a new Level.
+     *
+     * @param currentLevel the current level
+     */
     public Level(int currentLevel) {
         // Load level map
         String MAP_FILE = String.format("res/levels/%s.tmx", currentLevel);
@@ -83,7 +90,12 @@ public class Level {
         this.tankProjectiles = new ArrayList<>();
     }
 
-    //------------------------------------------- Level methods ------------------------------------------------------//
+
+//------------------------------------------- Level methods ------------------------------------------------------//
+
+    /**
+     * Render.
+     */
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         // Configure status panel appropriately
@@ -95,8 +107,12 @@ public class Level {
         renderTowers();
     }
 
+    /**
+     * Update level.
+     *
+     * @param input the input
+     */
     public void updateLevel(Input input) {
-
         // Render level
         render();
         // Update current wave
@@ -129,8 +145,18 @@ public class Level {
         }
     }
 
+    /**
+     * Is finished boolean.
+     *
+     * @return the boolean
+     */
     public boolean isFinished() { return finished;}
 
+    /**
+     * Is player killed boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPlayerKilled() { return playerKilled; }
 
     //------------------------------------------ Panel related methods -----------------------------------------------//
@@ -277,7 +303,10 @@ public class Level {
             e.printStackTrace();
         }
     }
-    // Initiate the game level
+
+    /**
+     * Start level.
+     */
     public void startLevel() {
         if(!waves.get(TOP).waveStatus()) {
             waves.get(TOP).startWave();

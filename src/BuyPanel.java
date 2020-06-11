@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Buy panel.
+ */
 public class BuyPanel {
     // Background image of the panel and purchase items
     private static final String BG_IMAGE = "res/images/buypanel.png";
@@ -37,6 +40,11 @@ public class BuyPanel {
     private final Tower airSupport;
     private List<Tower> purchaseItems;
 
+    /**
+     * Gets purchase items.
+     *
+     * @return the purchase items
+     */
     public List<Tower> getPurchaseItems() {
         return purchaseItems;
     }
@@ -44,7 +52,11 @@ public class BuyPanel {
     // Attribute to keep track of player's current money
     private int playerMoney;
 
-    // Constructor
+    /**
+     * Instantiates a new Buy panel.
+     *
+     * @param money the money
+     */
     public BuyPanel(int money) {
         // Initialise purchase items
         this.tank = new Tower(new Point(64, OFFSET_H), TANK, 250);
@@ -55,6 +67,9 @@ public class BuyPanel {
         loadItems();
     }
 
+    /**
+     * Render panel.
+     */
     public void renderPanel() {
         // Draw the background
         background.drawFromTopLeft(0, 0);
@@ -107,9 +122,20 @@ public class BuyPanel {
         purchaseItems.add(airSupport);
     }
 
+    /**
+     * Sets player money.
+     *
+     * @param money the money
+     */
     public void setPlayerMoney(int money) {
         playerMoney = money;
     }
+
+    /**
+     * Gets canvas.
+     *
+     * @return the canvas
+     */
     public Rectangle getCanvas() {
         return canvas;
     }

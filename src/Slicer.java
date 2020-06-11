@@ -1,34 +1,75 @@
-import bagel.DrawOptions;
-import bagel.Image;
 import bagel.Input;
-import bagel.Window;
 import bagel.util.Point;
 import bagel.util.Vector2;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
+/**
+ * The type Slicer.
+ */
 public class Slicer extends Sprite{
 
+    /**
+     * The constant SPEED.
+     */
     protected static final double SPEED = 2;
+    /**
+     * The constant DEF_HEALTH.
+     */
     protected static final int DEF_HEALTH = 1;
+    /**
+     * The constant REWARD.
+     */
     protected static final int REWARD = 2;
+    /**
+     * The constant PENALTY.
+     */
     protected static final int PENALTY = 1;
+    /**
+     * The Health.
+     */
     protected int health;
+    /**
+     * The Speed.
+     */
     protected double speed;
+    /**
+     * The Polyline.
+     */
     protected final List<Point> polyline;
+    /**
+     * The Target point index.
+     */
     protected int targetPointIndex;
+    /**
+     * The Finished.
+     */
     protected boolean finished;
+    /**
+     * The Killed.
+     */
     protected boolean killed;
+    /**
+     * The Reward.
+     */
     protected int reward;
+    /**
+     * The Penalty.
+     */
     protected int penalty;
+    /**
+     * The Has children.
+     */
     protected boolean hasChildren;
+    /**
+     * The Child no.
+     */
     protected int childNo;
+
     /**
      * Creates a new Slicer
      *
-     * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
+     * @param polyline   The polyline that the slicer must traverse (must have at least 1 point)
+     * @param slicerType the slicer type
      */
     public Slicer(List<Point> polyline, String slicerType) {
         super(polyline.get(0), slicerType);
@@ -44,10 +85,20 @@ public class Slicer extends Sprite{
         this.childNo = 0;
     }
 
+    /**
+     * Gets health.
+     *
+     * @return the health
+     */
     public int getHealth() {
         return health;
     }
 
+    /**
+     * Update.
+     *
+     * @param input the input
+     */
     public void update(Input input) {
         if(finished) {
             return;
@@ -85,10 +136,20 @@ public class Slicer extends Sprite{
         render();
     }
 
+    /**
+     * Is finished boolean.
+     *
+     * @return the boolean
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     * Reduce health.
+     *
+     * @param hitPoints the hit points
+     */
     public void reduceHealth(int hitPoints) {
         health -= hitPoints;
         if(health <= 0) {
@@ -97,23 +158,59 @@ public class Slicer extends Sprite{
         }
     }
 
-    // Method to determine whether the slicer was killed or not
+    /**
+     * Is killed boolean.
+     *
+     * @return the boolean
+     */
+// Method to determine whether the slicer was killed or not
     public boolean isKilled() { return  killed; }
 
+    /**
+     * Give reward int.
+     *
+     * @return the int
+     */
     public int giveReward() { return reward; }
-    //Get the damage dealt by the slicer
+
+    /**
+     * Gets penalty.
+     *
+     * @return the penalty
+     */
+//Get the damage dealt by the slicer
     public int getPenalty() { return penalty;}
 
+    /**
+     * Gets child num.
+     *
+     * @return the child num
+     */
     public int getChildNum() { return childNo; }
 
+    /**
+     * Sets target index.
+     *
+     * @param index the index
+     */
     public void setTargetIndex(int index) {
         this.targetPointIndex = index;
     }
 
+    /**
+     * Gets target index.
+     *
+     * @return the target index
+     */
     public int getTargetIndex() {
         return targetPointIndex;
     }
 
+    /**
+     * Sets position.
+     *
+     * @param position the position
+     */
     public void setPosition(Point position) {
         rect = image.getBoundingBoxAt(position);
     }

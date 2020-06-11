@@ -1,5 +1,8 @@
 import bagel.util.Point;
 
+/**
+ * The type Tank.
+ */
 public class Tank extends Tower {
 
     private static final int TANK_COST = 250;
@@ -7,6 +10,11 @@ public class Tank extends Tower {
     private static final int RADIUS = 100;
     private static final double TANK_COOLDOWN = 1;
 
+    /**
+     * Instantiates a new Tank.
+     *
+     * @param point the point
+     */
     public Tank(Point point) {
         super(point, TANK_IMAGE, TANK_COST);
         this.radius = RADIUS;
