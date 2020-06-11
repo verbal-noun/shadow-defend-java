@@ -49,6 +49,8 @@ public class Level {
     private List<AirSupport> airSupport;
     private int planeCount;
     private List<Explosive> explosives;
+    private List<Projectile> tankProjectiles;
+    private List<SuperProjectile> superProjectiles;
     private Wave currWave;
 
     // Constructor
@@ -70,6 +72,8 @@ public class Level {
         airSupport = new ArrayList<>();
         this.planeCount = 0;
         this.explosives = new ArrayList<>();
+        this.superProjectiles = new ArrayList<>();
+        this.tankProjectiles = new ArrayList<>();
     }
 
     private void loadWave() {
@@ -129,10 +133,8 @@ public class Level {
             statusPanel.setGameStatus(WIN);
             return;
         }
-        // Update airplane position if any
-        flyAirplanes();
-        //check for live explosives
-        updateExplosive();
+        // Update state towers and ammunition of the level
+        updateDefense();
         // Attack enemies when in range and waves remaining
         if(waves.size() > 0) { attack(); }
         // Control player interaction
@@ -274,6 +276,36 @@ public class Level {
             E.render();
         }
     }
+    // Update the state of towers in the game
+    private void updateDefense() {
+        // Update the active towers
+        updateTanks(tanks);
+        updateTanks(superTanks);
+        // Update any projectiles or explosives
+        updateExplosive();
+        updateExplosive();
+        // Update passive towers
+        flyAirplanes();
+    }
+    // Update the state of active towers
+    private <T extends  Tower> void updateTanks(List<T> towers) {
+        for(int i = towers.size() - 1; i >= 0; i--) {
+            T tower = towers.get(i);
+            tower.update();
+        }
+    }
+
+    // Update projectiles launched by active towers
+    private <T extends Projectile> void updateProjectiles(List<T> projectiles) {
+        for(int i = projectiles.size() - 1; i >= 0; i--) {
+            T projectile = projectiles.get(i);
+            projectile.update();
+            if(projectile.isTargetHit()) {
+                projectiles.remove(i);
+            }
+        }
+    }
+
     // Fly the planes purchased by the player
     private void flyAirplanes() {
         for(int i = airSupport.size() - 1; i >= 0; i--) {
@@ -289,6 +321,7 @@ public class Level {
             }
         }
     }
+
     // Update the status of level's explosives
     private void updateExplosive() {
         for(int i = explosives.size()-1; i >= 0; i--) {
@@ -302,6 +335,7 @@ public class Level {
             }
         }
     }
+
     // Method to fire at enemies when in range
     private void attack() {
         // Position and fire tanks
@@ -335,9 +369,10 @@ public class Level {
         }
 
     }
+
     // Method to detect enemy in range
     private <E extends Sprite, T extends Tower> void searchEnemy(List<E> enemyList, T tower) {
-        // Determine if enemy exists within range of tower
+        // Determine if any enemy exists within range of tower
         for(E enemy : enemyList) {
             Vector2 distance = enemy.getCenter().asVector().sub(tower.getCenter().asVector());
             if(distance.length() <= tower.getRadius()) {
@@ -347,7 +382,28 @@ public class Level {
                 double angle = Math.atan2(enemy.getCenter().y - tower.getCenter().y,
                         enemy.getCenter().x - tower.getCenter().x);
                 tower.setAngle(angle + HORIZONTAL);
+                // If cooldown period is over then shoot
+                if(tower.isWeaponsHot()) {
+                    shootEnemy(enemy, tower);
+                }
             }
+            // Target locked
+            break;
+        }
+    }
+
+    // A method to facilitate shooting of enemy slicers
+    private <E extends Sprite, T extends Tower> void shootEnemy(E enemy, T tower) {
+        // Determine type of tower and launch projectile accordingly
+        if(tower.getClass() == Tank.class) {
+            tankProjectiles.add(new Projectile(tower.getCenter()));
+            tower.startCooldown();
+            System.out.println(tankProjectiles.size());
+        }
+        if(tower.getClass() == SuperTank.class) {
+            superProjectiles.add(new SuperProjectile(tower.getCenter()));
+            tower.startCooldown();
+            System.out.println("Super tank ammo: " + superProjectiles.size());
         }
     }
 }

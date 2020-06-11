@@ -51,7 +51,8 @@ public class AirSupport extends Tower {
         }
         return pos;
     }
-    
+
+    @Override
     public void update() {
         frameCount += ShadowDefend.getTimescale();
         // Move its position according to its direction
