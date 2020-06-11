@@ -32,7 +32,7 @@ public class Level {
     private final TiledMap map;
     private final List<Point> polyline;
     // File containing wave information
-    private static final String WAVE_FILE = "res/levels/test-waves.txt";
+    private static final String WAVE_FILE = "res/levels/waves.txt";
     private List<Wave> waves = new ArrayList<>();
     // Player for the level
     private Player player;
@@ -136,7 +136,7 @@ public class Level {
         // Update state towers and ammunition of the level
         updateDefense();
         // Attack enemies when in range and waves remaining
-        if(waves.size() > 0) { attack(); }
+        if(waves.size() > 0) { attackEnemy(); }
         // Control player interaction
         playerInteraction(input);
     }
@@ -297,7 +297,7 @@ public class Level {
     }
 
     // Update projectiles launched by active towers
-    private <T extends Projectile> void updateProjectiles(List<T> projectiles) {
+    private <T extends Projectile<Slicer>> void updateProjectiles(List<T> projectiles) {
         for(int i = projectiles.size() - 1; i >= 0; i--) {
             T projectile = projectiles.get(i);
             projectile.update();
@@ -329,16 +329,27 @@ public class Level {
             Explosive E = explosives.get(i);
             E.update();
             if(E.isActive()) {
-                // Deal damage
-
+                // Deal damage to all slicers in the area
+                explodeEnemy(waves.get(TOP).getSlicers(), E);
+                explodeEnemy(waves.get(TOP).getSuperSlicers(), E);
+                explodeEnemy(waves.get(TOP).getMegaSlicers(), E);
+                explodeEnemy(waves.get(TOP).getApexSlicers(), E);
                 // remove explosive
                 explosives.remove(i);
             }
         }
     }
-
-    // Method to fire at enemies when in range
-    private void attack() {
+    // Method to deal damage to slicers by explosives
+    private <T extends Slicer> void explodeEnemy(List<T> enemies, Explosive bomb) {
+        for(T enemy : enemies) {
+            Vector2 distance = enemy.getCenter().asVector().sub(bomb.getCenter().asVector());
+            if(distance.length() <= bomb.getRadius()) {
+                enemy.reduceHealth(bomb.dealDamage());
+            }
+        }
+    }
+    // Method to fire at enemies when in range by active towers
+    private void attackEnemy() {
         // Position and fire tanks
         for(Tank tank : tanks) {
             // Position tank towards enemy in range
