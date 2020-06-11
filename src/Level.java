@@ -32,7 +32,7 @@ public class Level {
     private final TiledMap map;
     private final List<Point> polyline;
     // File containing wave information
-    private static final String WAVE_FILE = "res/levels/test-waves.txt";
+    private static final String WAVE_FILE = "res/levels/waves.txt";
     private List<Wave> waves = new ArrayList<>();
     // Player for the level
     private Player player;

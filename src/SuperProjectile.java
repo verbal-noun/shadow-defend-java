@@ -3,7 +3,7 @@ import bagel.util.Point;
 
 public class SuperProjectile<T extends Slicer> extends Projectile {
     private static final String IMAGE = "res/images/supertank_projectile.png";
-    private static final int SUPERTANK_DAMAGE = 1;
+    private static final int SUPERTANK_DAMAGE = 3;
     /**
      * Creates a new Sprite (game entity)
      *
