@@ -3,7 +3,7 @@ import bagel.util.Point;
 import java.util.List;
 
 public class ApexSlicer extends MegaSlicer {
-    private static final int CHILD_NUM = 4;
+    private static final int APEX_CHILD_NUM = 4;
     private static final int FACTOR = 2;
     private static final int HEALTH_FACTOR = 25;
     private static final int APEX_REWARD = 150;
@@ -19,7 +19,8 @@ public class ApexSlicer extends MegaSlicer {
         this.reward = APEX_REWARD;
         this.speed = super.getSpeed() / FACTOR;
         System.out.println(speed);
-        this.penalty = super.getPenalty() * CHILD_NUM;
+        this.penalty = super.getPenalty() * APEX_CHILD_NUM;
+        this.childNo = APEX_CHILD_NUM;
     }
 
 }

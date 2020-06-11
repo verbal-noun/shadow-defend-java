@@ -1,5 +1,6 @@
 import bagel.Input;
 import bagel.util.Point;
+import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,6 +184,41 @@ public class Wave {
                 } else {
                     player.reduceLives(s.getPenalty());
                 }
+                if(s.isKilled() && s.hasChildren) {
+                    spawnChildren(s);
+
+                }
+            }
+        }
+    }
+
+    private <T extends Slicer> void spawnChildren(T slicer) {
+        // Add according child slicer
+        if(slicer.getClass() == SuperSlicer.class) {
+            for(int i = 0; i < slicer.getChildNum(); i++) {
+                //System.out.println("Reach");
+                String imageSrc = String.format(IMAGE_FILE, SLICER);
+                Slicer newSlicer = new Slicer(polyline, imageSrc);
+                newSlicer.setPosition(slicer.getCenter());
+                newSlicer.setTargetIndex(slicer.getTargetIndex());
+                slicers.add(newSlicer);
+            }
+
+        } else if(slicer.getClass() == MegaSlicer.class) {
+            for(int i = 0; i < slicer.getChildNum(); i++) {
+                String imageSrc = String.format(IMAGE_FILE, SUPER_SLICER);
+                SuperSlicer newSlicer = new SuperSlicer(polyline, imageSrc);
+                newSlicer.setPosition(slicer.getCenter());
+                newSlicer.setTargetIndex(slicer.getTargetIndex());
+                superSlicers.add(newSlicer);
+            }
+        } else {
+            for(int i = 0; i < slicer.getChildNum(); i++) {
+                String imageSrc = String.format(IMAGE_FILE, MEGA_SLICER);
+                MegaSlicer newSlicer = new MegaSlicer(polyline, imageSrc);
+                newSlicer.setPosition(slicer.getCenter());
+                newSlicer.setTargetIndex(slicer.getTargetIndex());
+                megaSlicers.add(newSlicer);
             }
         }
     }

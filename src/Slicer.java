@@ -23,6 +23,8 @@ public class Slicer extends Sprite{
     protected boolean killed;
     protected int reward;
     protected int penalty;
+    protected boolean hasChildren;
+    protected int childNo;
     /**
      * Creates a new Slicer
      *
@@ -38,6 +40,8 @@ public class Slicer extends Sprite{
         this.reward = REWARD;
         this.killed = false;
         this.penalty = PENALTY;
+        this.hasChildren = false;
+        this.childNo = 0;
     }
 
     public int getHealth() {
@@ -99,5 +103,19 @@ public class Slicer extends Sprite{
     public int giveReward() { return reward; }
     //Get the damage dealt by the slicer
     public int getPenalty() { return penalty;}
+
+    public int getChildNum() { return childNo; }
+
+    public void setTargetIndex(int index) {
+        this.targetPointIndex = index;
+    }
+
+    public int getTargetIndex() {
+        return targetPointIndex;
+    }
+
+    public void setPosition(Point position) {
+        rect = image.getBoundingBoxAt(position);
+    }
 }
 

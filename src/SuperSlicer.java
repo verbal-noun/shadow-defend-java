@@ -8,8 +8,6 @@ public class SuperSlicer extends Slicer {
    private static final int SUPER_REWARD = 15;
    private static final int CHILD_NUM = 2;
 
-
-
     /**
      * Creates a new Super Slicer
      *
@@ -20,6 +18,9 @@ public class SuperSlicer extends Slicer {
         this.reward = SUPER_REWARD;
         this.speed = SPEED * FACTOR;
         this.penalty = PENALTY * CHILD_NUM;
+        this.hasChildren = true;
+        this.childNo = CHILD_NUM;
     }
+
 
 }
