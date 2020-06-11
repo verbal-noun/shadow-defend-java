@@ -20,6 +20,7 @@ public class Slicer extends Sprite{
     protected final List<Point> polyline;
     protected int targetPointIndex;
     protected boolean finished;
+    protected int reward;
     /**
      * Creates a new Slicer
      *
@@ -32,6 +33,7 @@ public class Slicer extends Sprite{
         this.finished = false;
         this.health = DEF_HEALTH;
         this.speed = SPEED;
+        this.reward = REWARD;
     }
 
     public int getHealth() {
@@ -85,5 +87,7 @@ public class Slicer extends Sprite{
             finished = true;
         }
     }
+
+    public int giveReward() { return reward; }
 }
 

@@ -7,7 +7,6 @@ public class SuperSlicer extends Slicer {
    private static final double FACTOR = 3.0 / 4.0;
    private static final int SUPER_REWARD = 15;
    private static final int CHILD_NUM = 2;
-   protected int reward;
    protected int penalty;
 
 

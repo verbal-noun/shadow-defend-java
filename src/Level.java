@@ -88,7 +88,7 @@ public class Level {
                 int waveNo = Integer.parseInt(line.substring(0, index));
                 // Check if wave exists in the list
                 if(waveNo > waves.size()) {
-                    waves.add(new Wave(polyline));
+                    waves.add(new Wave(polyline, player));
                 }
                 // Pass event information into the wave
                 waves.get(waveNo-1).addEvent(line.substring(index+1));

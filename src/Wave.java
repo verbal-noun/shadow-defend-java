@@ -32,6 +32,7 @@ public class Wave {
     private Event delayEvent;
     private String currEvent;
     private boolean isFinished;
+    private Player player;
 
     public int getSpawnedSlicers() {
         return spawnedSlicers;
@@ -44,7 +45,7 @@ public class Wave {
     public boolean isFinished() { return isFinished; }
 
     //Constructor
-    public Wave(List<Point> polyline) {
+    public Wave(List<Point> polyline, Player player) {
         // Load polyline points from the map to the wave
         this.polyline = polyline;
         this.slicers = new ArrayList<>();
@@ -53,6 +54,7 @@ public class Wave {
         this.apexSlicers = new ArrayList<>();
         this.events = new ArrayList<>();
         this.isFinished = false;
+        this.player = player;
     }
 
     /* A method to initialise the wave of 5 slicers */
@@ -92,40 +94,13 @@ public class Wave {
     /* A method to update the wave's current status */
     public void updateWave(Input input) {
         // Update the state of wave's regular slicers
-        for (int i = slicers.size() - 1; i >= 0; i--) {
-            Slicer s = slicers.get(i);
-            s.update(input);
-            if (s.isFinished()) {
-                slicers.remove(i);
-            }
-        }
-
+        updateSlicer(slicers, input);
         // Update the state of wave's super slicers
-        for (int i = superSlicers.size() - 1; i >= 0; i--) {
-            SuperSlicer s = superSlicers.get(i);
-            s.update(input);
-            if (s.isFinished()) {
-                superSlicers.remove(i);
-            }
-        }
-
+        updateSlicer(superSlicers, input);
         // Update the state of wave's mega slicers
-        for (int i = megaSlicers.size() - 1; i >= 0; i--) {
-            MegaSlicer s = megaSlicers.get(i);
-            s.update(input);
-            if (s.isFinished()) {
-                megaSlicers.remove(i);
-            }
-        }
-
+        updateSlicer(megaSlicers, input);
         // Update the state of wave's super slicers
-        for (int i = apexSlicers.size() - 1; i >= 0; i--) {
-            ApexSlicer s = apexSlicers.get(i);
-            s.update(input);
-            if (s.isFinished()) {
-                apexSlicers.remove(i);
-            }
-        }
+        updateSlicer(apexSlicers, input);
 
         // Update the current event of the wave
         if(waveStarted) {
@@ -195,5 +170,17 @@ public class Wave {
     public List<SuperSlicer> getSuperSlicers() { return superSlicers; }
     public List<MegaSlicer> getMegaSlicers() { return megaSlicers; }
     public List<ApexSlicer> getApexSlicers() { return apexSlicers; }
+
+    // Method to update different kinds of slicers
+    private <T extends Slicer> void updateSlicer(List<T> slicerList, Input input) {
+        // Update the state of wave's regular slicers
+        for (int i = slicerList.size() - 1; i >= 0; i--) {
+            T s = slicerList.get(i);
+            s.update(input);
+            if (s.isFinished()) {
+                slicerList.remove(i);
+            }
+        }
+    }
 
 }
