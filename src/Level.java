@@ -168,31 +168,35 @@ public class Level {
             }
             // If item was selected previously, try to place it
         } else if (input.wasPressed(MouseButtons.LEFT) && itemSelected){
+            // Check if the current position is valid or not
+            boolean validPos = checkPosValidity(currPos, input);
             // Place item if current position is valid
-            if(selectedItem == TANK) {
-                // Purchase a tank
-                Tank newItem = new Tank(currPos);
-                tanks.add(newItem);
-                // Deduct money from player
-                player.reduceMoney(newItem.getCost());
+            if(validPos) {
+                if(selectedItem == TANK) {
+                    // Purchase a tank
+                    Tank newItem = new Tank(currPos);
+                    tanks.add(newItem);
+                    // Deduct money from player
+                    player.reduceMoney(newItem.getCost());
+                }
+                if(selectedItem == SUPER_TANK) {
+                    // Purchase a tank
+                    SuperTank newItem = new SuperTank(currPos);
+                    superTanks.add(newItem);
+                    // Deduct money from player
+                    player.reduceMoney(newItem.getCost());
+                }
+                if(selectedItem == AIR_SUPPORT) {
+                    // Purchase a plane
+                    planeCount += 1;
+                    AirSupport newItem = new AirSupport(currPos, planeCount);
+                    airSupport.add(newItem);
+                    // Deduct money from player
+                    player.reduceMoney(newItem.getCost());
+                }
+                // Clear selection
+                itemSelected = false;
             }
-            if(selectedItem == SUPER_TANK) {
-                // Purchase a tank
-                SuperTank newItem = new SuperTank(currPos);
-                superTanks.add(newItem);
-                // Deduct money from player
-                player.reduceMoney(newItem.getCost());
-            }
-            if(selectedItem == AIR_SUPPORT) {
-                // Purchase a plane
-                planeCount += 1;
-                AirSupport newItem = new AirSupport(currPos, planeCount);
-                airSupport.add(newItem);
-                // Deduct money from player
-                player.reduceMoney(newItem.getCost());
-            }
-            // Clear selection
-            itemSelected = false;
         } else if (input.wasPressed(MouseButtons.RIGHT) && itemSelected) {
             // Clear selection
             itemSelected = false;
@@ -200,42 +204,50 @@ public class Level {
 
         // If item has been selected then draw it at the mouse point
         if(itemSelected) {
-            Image image = purchaseItems.get(selectedItem).getImage();
-            boolean invalidPos = input.getMouseX() < 0 || input.getMouseX() > Window.getWidth() ||
-                    input.getMouseY() < 0 || input.getMouseY() > Window.getHeight();
-            // If mouse cursor is not outside the game window
-            if(!invalidPos) {
-                boolean validPos = true;
-                // Check if position is over a valid item or not
-                // Check if is over an invalid map item
-                if (map.hasProperty((int) currPos.x, (int) currPos.y, "blocked")) {
+            boolean validPos = checkPosValidity(currPos, input);
+            // If the cursor is on top of a valid position draw image
+            if (validPos) {
+                Image image = purchaseItems.get(selectedItem).getImage();
+                image.draw(currPos.x, currPos.y);
+            }
+        }
+
+    }
+
+    private boolean checkPosValidity(Point currPos, Input input) {
+        // Check if current cursor location is outside game window
+        boolean invalidPos = input.getMouseX() < 0 || input.getMouseX() > Window.getWidth() ||
+                input.getMouseY() < 0 || input.getMouseY() > Window.getHeight();
+
+        boolean validPos = true;
+        // If mouse cursor is not outside the game window
+        if(!invalidPos) {
+
+            // Check if position is over a valid item or not
+            // Check if is over an invalid map item
+            if (map.hasProperty((int) currPos.x, (int) currPos.y, "blocked")) {
+                validPos = false;
+            }
+            // Check if center intersects with any panel
+            if (currPos.y <= BUY_PANEL_BORDER || currPos.y >= STATUS_PANEL_BORDER) {
+                validPos = false;
+            }
+            // Check if new tower intersects with any existing towers
+            for (Tank T : tanks) {
+                if (T.getRect().intersects(currPos)) {
                     validPos = false;
+                    break;
                 }
-                // Check if center intersects with any panel
-                if (currPos.y <= BUY_PANEL_BORDER || currPos.y >= STATUS_PANEL_BORDER) {
+            }
+            for (SuperTank T : superTanks) {
+                if (T.getRect().intersects(currPos)) {
                     validPos = false;
-                }
-                // Check if new tower intersects with any existing towers
-                for(Tank T : tanks) {
-                   if(T.getRect().intersects(currPos)) {
-                       validPos = false;
-                       break;
-                   }
-                }
-                for(SuperTank T : superTanks) {
-                    if(T.getRect().intersects(currPos)) {
-                        validPos = false;
-                        break;
-                    }
-                }
-                // If the cursor is on top of a valid position draw image
-                if (validPos) {
-                    image.draw(currPos.x, currPos.y);
+                    break;
                 }
             }
         }
+        return validPos;
     }
-
     //----------------------------------------- Wave related methods -------------------------------------------------//
 
     // Load waves from waves file and fill events
