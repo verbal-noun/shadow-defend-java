@@ -1,1 +1,1 @@
-1,spawn,1,slicer,1000
+1,spawn,30,apexslicer,1000

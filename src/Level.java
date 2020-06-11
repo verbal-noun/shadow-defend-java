@@ -118,7 +118,9 @@ public class Level {
         // Update state towers and ammunition of the level
         updateDefense();
         // Attack enemies when in range and waves remaining
-        if(waves.size() > 0) { attackEnemy(); }
+        if(waves.size() > 0) {
+            attackEnemy();
+        }
         // Control player interaction
         playerInteraction(input);
         // Check if player has died or not
@@ -404,9 +406,8 @@ public class Level {
         searchEnemy(waves.get(TOP).getApexSlicers(), tank);
         // load all the mega slicers of the wave if any
         if(!tank.isEnemyDetected()) {
-            searchEnemy(waves.get(TOP).getSuperSlicers(), tank);
+            searchEnemy(waves.get(TOP).getMegaSlicers(), tank);
         }
-        searchEnemy(waves.get(TOP).getMegaSlicers(), tank);
         // Load all the super slicers of the wave if any
         if(!tank.isEnemyDetected()) {
             searchEnemy(waves.get(TOP).getSuperSlicers(), tank);
@@ -424,6 +425,7 @@ public class Level {
         for(E enemy : enemyList) {
             Vector2 distance = enemy.getCenter().asVector().sub(tower.getCenter().asVector());
             if(distance.length() <= tower.getRadius()) {
+                //System.out.println(distance);
                 // Signal enemy is detected
                 tower.setEnemyDetected(true);
                 // Turn tower towards enemy
@@ -434,9 +436,10 @@ public class Level {
                 if(tower.isWeaponsHot()) {
                     shootEnemy(enemy, tower);
                 }
+                // Target locked
+                break;
             }
-            // Target locked
-            break;
+
         }
     }
 
@@ -444,11 +447,11 @@ public class Level {
     private <E extends Slicer, T extends Tower> void shootEnemy(E enemy, T tower) {
         // Determine type of tower and launch projectile accordingly
         if(tower.getClass() == Tank.class) {
-            tankProjectiles.add(new Projectile<E>(tower.getCenter(), enemy));
+            tankProjectiles.add(new Projectile<>(tower.getCenter(), enemy));
             tower.startCooldown();
         }
         if(tower.getClass() == SuperTank.class) {
-            superProjectiles.add(new SuperProjectile<E>(tower.getCenter(), enemy));
+            superProjectiles.add(new SuperProjectile<>(tower.getCenter(), enemy));
             tower.startCooldown();
         }
     }

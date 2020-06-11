@@ -19,7 +19,6 @@ public class Wave {
     private static final String IMAGE_FILE = "res/images/%s.png";
     //An attribute to determine when the wave has started and finished.
     private boolean waveStarted = false;
-
     //The slicers and the path of the wave
     private final List<Slicer> slicers;
     private final List<SuperSlicer> superSlicers;

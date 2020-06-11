@@ -29,8 +29,6 @@ public class Projectile<T extends Slicer> extends Sprite {
         Vector2 enemy = enemyPoint.asVector();
         Vector2 current = currentPoint.asVector();
         Vector2 distance = enemy.sub(current);
-        // Pixel distance from current and target position
-        double magnitude = distance.length();
         // Check if we have reached the end
         super.move(distance.normalised().mul(SPEED * ShadowDefend.getTimescale()));
         // Check if we are close to target than our step size

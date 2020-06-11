@@ -18,7 +18,6 @@ public class ApexSlicer extends MegaSlicer {
         this.health = HEALTH_FACTOR * DEF_HEALTH;
         this.reward = APEX_REWARD;
         this.speed = super.getSpeed() / FACTOR;
-        System.out.println(speed);
         this.penalty = super.getPenalty() * APEX_CHILD_NUM;
         this.childNo = APEX_CHILD_NUM;
     }
