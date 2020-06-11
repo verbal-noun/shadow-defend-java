@@ -20,7 +20,9 @@ public class Slicer extends Sprite{
     protected final List<Point> polyline;
     protected int targetPointIndex;
     protected boolean finished;
+    protected boolean killed;
     protected int reward;
+    protected int penalty;
     /**
      * Creates a new Slicer
      *
@@ -34,6 +36,8 @@ public class Slicer extends Sprite{
         this.health = DEF_HEALTH;
         this.speed = SPEED;
         this.reward = REWARD;
+        this.killed = false;
+        this.penalty = PENALTY;
     }
 
     public int getHealth() {
@@ -84,10 +88,16 @@ public class Slicer extends Sprite{
     public void reduceHealth(int hitPoints) {
         health -= hitPoints;
         if(health <= 0) {
+            killed = true;
             finished = true;
         }
     }
 
+    // Method to determine whether the slicer was killed or not
+    public boolean isKilled() { return  killed; }
+
     public int giveReward() { return reward; }
+    //Get the damage dealt by the slicer
+    public int getPenalty() { return penalty;}
 }
 

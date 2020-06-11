@@ -1,6 +1,5 @@
 import bagel.Input;
 import bagel.util.Point;
-import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +178,11 @@ public class Wave {
             s.update(input);
             if (s.isFinished()) {
                 slicerList.remove(i);
+                if(s.isKilled()) {
+                    player.addMoney(s.giveReward());
+                } else {
+                    player.reduceLives(s.getPenalty());
+                }
             }
         }
     }

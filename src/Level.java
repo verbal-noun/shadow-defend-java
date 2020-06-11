@@ -32,7 +32,7 @@ public class Level {
     private final TiledMap map;
     private final List<Point> polyline;
     // File containing wave information
-    private static final String WAVE_FILE = "res/levels/waves.txt";
+    private static final String WAVE_FILE = "res/levels/test-waves.txt";
     private List<Wave> waves = new ArrayList<>();
     // Player for the level
     private Player player;
@@ -52,6 +52,7 @@ public class Level {
     private List<Projectile> tankProjectiles;
     private List<SuperProjectile> superProjectiles;
     private Wave currWave;
+    private int waveNo;
 
     // Constructor
     public Level(int currentLevel) {
@@ -66,6 +67,7 @@ public class Level {
         // Load waves
         loadWave();
         this.itemSelected = false;
+        this.waveNo = 1;
         // Load level defence
         tanks = new ArrayList<>();
         superTanks = new ArrayList<>();
@@ -76,31 +78,7 @@ public class Level {
         this.tankProjectiles = new ArrayList<>();
     }
 
-    private void loadWave() {
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(WAVE_FILE));
-            String line = reader.readLine();
-            while(line != null) {
-                // Process the wave line
-                // Extract wave number
-                int index = line.indexOf(",");
-                int waveNo = Integer.parseInt(line.substring(0, index));
-                // Check if wave exists in the list
-                if(waveNo > waves.size()) {
-                    waves.add(new Wave(polyline, player));
-                }
-                // Pass event information into the wave
-                waves.get(waveNo-1).addEvent(line.substring(index+1));
-                // Read the next line
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    //------------------------------------------- Level methods ------------------------------------------------------//
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         // Configure status panel appropriately
@@ -140,7 +118,9 @@ public class Level {
         // Control player interaction
         playerInteraction(input);
     }
-    //----------------------------------------- Panel related methods ------------------------------------------------//
+
+    //------------------------------------------ Panel related methods -----------------------------------------------//
+
     // Update the status panel with proper information
     private void updatePanels() {
         // Status panel related configurations
@@ -182,14 +162,14 @@ public class Level {
                 Tank newItem = new Tank(currPos);
                 tanks.add(newItem);
                 // Deduct money from player
-                player.setMoney(newItem.getCost());
+                player.reduceMoney(newItem.getCost());
             }
             if(selectedItem == SUPER_TANK) {
                 // Purchase a tank
                 SuperTank newItem = new SuperTank(currPos);
                 superTanks.add(newItem);
                 // Deduct money from player
-                player.setMoney(newItem.getCost());
+                player.reduceMoney(newItem.getCost());
             }
             if(selectedItem == AIR_SUPPORT) {
                 // Purchase a plane
@@ -197,7 +177,7 @@ public class Level {
                 AirSupport newItem = new AirSupport(currPos, planeCount);
                 airSupport.add(newItem);
                 // Deduct money from player
-                player.setMoney(newItem.getCost());
+                player.reduceMoney(newItem.getCost());
             }
             // Clear selection
             itemSelected = false;
@@ -243,7 +223,34 @@ public class Level {
             }
         }
     }
+
     //----------------------------------------- Wave related methods -------------------------------------------------//
+
+    // Load waves from waves file and fill events
+    private void loadWave() {
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(WAVE_FILE));
+            String line = reader.readLine();
+            while(line != null) {
+                // Process the wave line
+                // Extract wave number
+                int index = line.indexOf(",");
+                int waveNo = Integer.parseInt(line.substring(0, index));
+                // Check if wave exists in the list
+                if(waveNo > waves.size()) {
+                    waves.add(new Wave(polyline, player));
+                }
+                // Pass event information into the wave
+                waves.get(waveNo-1).addEvent(line.substring(index+1));
+                // Read the next line
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     // Initiate the game level
     public void startLevel() {
         if(!waves.get(TOP).waveStatus()) {
@@ -253,10 +260,13 @@ public class Level {
     // Load next wave of the level if any
     private void loadNextWave() {
         waves.remove(TOP);
+        player.addMoney(100 * waveNo + 150);
+        waveNo += 1;
         statusPanel.increaseWave();
     }
 
     //----------------------------------------- Tower related methods ------------------------------------------------//
+
     // Draw the towers of the level
     private void renderTowers() {
         // Tanks
@@ -322,6 +332,8 @@ public class Level {
             }
         }
     }
+
+    //------------------------------------------ Projectile related methods ------------------------------------------//
 
     // Update the status of level's explosives
     private void updateExplosive() {

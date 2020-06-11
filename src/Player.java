@@ -14,13 +14,13 @@ public class Player {
         return money;
     }
 
-    public void setMoney(int amount) {
-        money -= amount;
-    }
+    public void reduceMoney(int amount) { money -= amount; }
 
+    public void addMoney(int amount) { money += amount; }
+    // Returns the lives left by the player
     public int getLives() {
         return lives;
     }
-
-    public void setLives(int lives) { this.lives = lives; }
+    // Method to reduce lives of player
+    public void reduceLives(int amount) { lives -= amount; }
 }
