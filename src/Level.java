@@ -126,7 +126,7 @@ public class Level {
                 waves.get(TOP).updateWave(input);
             }
         }
-            // Signal end of wave if all waves are finished
+        // Signal end of wave if all waves are finished
         if (waves.size() == 0) {
             isFinished = true;
             System.out.println("Level finished");
@@ -283,7 +283,8 @@ public class Level {
         updateTanks(superTanks);
         // Update any projectiles or explosives
         updateExplosive();
-        updateExplosive();
+        updateProjectiles(tankProjectiles);
+        updateProjectiles(superProjectiles);
         // Update passive towers
         flyAirplanes();
     }
@@ -371,7 +372,7 @@ public class Level {
     }
 
     // Method to detect enemy in range
-    private <E extends Sprite, T extends Tower> void searchEnemy(List<E> enemyList, T tower) {
+    private <E extends Slicer, T extends Tower> void searchEnemy(List<E> enemyList, T tower) {
         // Determine if any enemy exists within range of tower
         for(E enemy : enemyList) {
             Vector2 distance = enemy.getCenter().asVector().sub(tower.getCenter().asVector());
@@ -393,15 +394,15 @@ public class Level {
     }
 
     // A method to facilitate shooting of enemy slicers
-    private <E extends Sprite, T extends Tower> void shootEnemy(E enemy, T tower) {
+    private <E extends Slicer, T extends Tower> void shootEnemy(E enemy, T tower) {
         // Determine type of tower and launch projectile accordingly
         if(tower.getClass() == Tank.class) {
-            tankProjectiles.add(new Projectile(tower.getCenter()));
+            tankProjectiles.add(new Projectile<E>(tower.getCenter(), enemy));
             tower.startCooldown();
             System.out.println(tankProjectiles.size());
         }
         if(tower.getClass() == SuperTank.class) {
-            superProjectiles.add(new SuperProjectile(tower.getCenter()));
+            superProjectiles.add(new SuperProjectile<E>(tower.getCenter(), enemy));
             tower.startCooldown();
             System.out.println("Super tank ammo: " + superProjectiles.size());
         }

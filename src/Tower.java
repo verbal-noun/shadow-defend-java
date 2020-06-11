@@ -18,6 +18,7 @@ public class Tower extends Sprite {
         this.weaponsHot = true;
         frameCount = 0;
     }
+    // Return the current image for current tower
     public Image getImage() { return this.image; }
    // Get the purchase cost of tower
     public int getCost() { return cost; }

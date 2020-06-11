@@ -78,5 +78,12 @@ public class Slicer extends Sprite{
     public boolean isFinished() {
         return finished;
     }
+
+    public void reduceHealth(int hitPoints) {
+        health -= hitPoints;
+        if(health <= 0) {
+            finished = true;
+        }
+    }
 }
 
