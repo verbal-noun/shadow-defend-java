@@ -19,7 +19,6 @@ public class Wave {
     private static final String IMAGE_FILE = "res/images/%s.png";
     //An attribute to determine when the wave has started and finished.
     private boolean waveStarted = false;
-    private int spawnedSlicers = 0;
 
     //The slicers and the path of the wave
     private final List<Slicer> slicers;
@@ -34,16 +33,6 @@ public class Wave {
     private boolean isFinished;
     private Player player;
 
-    public int getSpawnedSlicers() {
-        return spawnedSlicers;
-    }
-
-    public int getSlicerCount() {
-        return slicers.size();
-    }
-
-    public boolean isFinished() { return isFinished; }
-
     //Constructor
     public Wave(List<Point> polyline, Player player) {
         // Load polyline points from the map to the wave
@@ -56,6 +45,8 @@ public class Wave {
         this.isFinished = false;
         this.player = player;
     }
+
+    public boolean isFinished() { return isFinished; }
 
     /* A method to initialise the wave of 5 slicers */
     public void spawnSlicer(String slicerType) {

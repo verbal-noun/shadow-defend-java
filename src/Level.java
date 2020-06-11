@@ -39,7 +39,7 @@ public class Level {
     // Panels
     private BuyPanel buyPanel;
     private StatusPanel statusPanel;
-    private boolean isFinished;
+    private boolean finished;
     // Attributes related to purchase
     private boolean itemSelected;
     private List<Tower> purchaseItems;
@@ -53,17 +53,22 @@ public class Level {
     private List<SuperProjectile> superProjectiles;
     private Wave currWave;
     private int waveNo;
+    private boolean playerKilled;
 
     // Constructor
     public Level(int currentLevel) {
+        // Load level map
         String MAP_FILE = String.format("res/levels/%s.tmx", currentLevel);
         this.map = new TiledMap(MAP_FILE);
         this.polyline = map.getAllPolylines().get(0);
+        // Instantiate the player
         this.player = new Player();
+        this.playerKilled = false;
+        // Instantiate panels
         this.buyPanel = new BuyPanel(500);
         this.purchaseItems = buyPanel.getPurchaseItems();
         this.statusPanel = new StatusPanel();
-        this.isFinished = false;
+        this.finished = false;
         // Load waves
         loadWave();
         this.itemSelected = false;
@@ -106,8 +111,7 @@ public class Level {
         }
         // Signal end of wave if all waves are finished
         if (waves.size() == 0) {
-            isFinished = true;
-            System.out.println("Level finished");
+            finished = true;
             statusPanel.setGameStatus(WIN);
             return;
         }
@@ -117,7 +121,15 @@ public class Level {
         if(waves.size() > 0) { attackEnemy(); }
         // Control player interaction
         playerInteraction(input);
+        // Check if player has died or not
+        if(player.getLives() <= 0) {
+            playerKilled = true;
+        }
     }
+
+    public boolean isFinished() { return finished;}
+
+    public boolean isPlayerKilled() { return playerKilled; }
 
     //------------------------------------------ Panel related methods -----------------------------------------------//
 
@@ -130,7 +142,7 @@ public class Level {
             statusPanel.setGameStatus(PLACING);
         } else if (waves.size() > 0 && waves.get(TOP).waveStatus()) {
             statusPanel.setGameStatus(WAVE);
-        } else if(!isFinished) {
+        } else if(!finished) {
             statusPanel.setGameStatus(WAIT);
         }
         // Update player lives
@@ -422,12 +434,10 @@ public class Level {
         if(tower.getClass() == Tank.class) {
             tankProjectiles.add(new Projectile<E>(tower.getCenter(), enemy));
             tower.startCooldown();
-            System.out.println(tankProjectiles.size());
         }
         if(tower.getClass() == SuperTank.class) {
             superProjectiles.add(new SuperProjectile<E>(tower.getCenter(), enemy));
             tower.startCooldown();
-            System.out.println("Super tank ammo: " + superProjectiles.size());
         }
     }
 }

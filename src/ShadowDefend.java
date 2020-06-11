@@ -4,7 +4,7 @@ import bagel.Keys;
 import bagel.Window;
 import bagel.map.TiledMap;
 import bagel.util.Point;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -83,8 +83,10 @@ public class ShadowDefend extends AbstractGame {
      * Update to new level when current level is finished
      */
     private void increaseLevel() {
-        levelNo += 1;
-        this.level = new Level(levelNo);
+        if(levelNo == 1) {
+            levelNo += 1;
+            this.level = new Level(levelNo);
+        }
     }
 
     /**
@@ -97,8 +99,17 @@ public class ShadowDefend extends AbstractGame {
         // Increase the frame counter by the current timescale
         frameCount += getTimescale();
 
-        // Draw map from the top left of the window
+        // Update level when current level is finished
+        if(!level.isFinished() && level.isPlayerKilled()) {
+            Window.close();
+        } else {
+            if(level.isFinished()){
+                increaseLevel();
+            }
+        }
+
         level.updateLevel(input);
+
         //System.out.println(level.waves.size());
 
         // Handle key presses
