@@ -2,9 +2,9 @@ import bagel.util.Point;
 import bagel.util.Vector2;
 
 /**
- * The type Projectile.
+ * The Projectile class.
  *
- * @param <T> the type parameter.
+ * @param <T> - Type of enemy which it is targeting
  */
 public class Projectile<T extends Slicer> extends Sprite {
     private static final String IMAGE = "res/images/tank_projectile.png";
@@ -12,16 +12,13 @@ public class Projectile<T extends Slicer> extends Sprite {
     private static final int TANK_DAMAGE = 1;
     private boolean targetHit;
     private T target;
-    /**
-     * The Damage.
-     */
     protected int damage;
 
     /**
      * Creates a new Sprite (game entity)
      *
-     * @param point  The starting point for the entity
-     * @param target the target
+     * @param point  - The starting point for the entity
+     * @param target - the target which it will attack
      */
     public Projectile(Point point, T target) {
         super(point, IMAGE);
@@ -31,7 +28,7 @@ public class Projectile<T extends Slicer> extends Sprite {
     }
 
     /**
-     * Update.
+     * Update the current state of the projectile
      */
     public void update() {
         // Obtain where we are and our target
@@ -47,6 +44,7 @@ public class Projectile<T extends Slicer> extends Sprite {
         if(target.getRect().intersects(getCenter())) {
             // Deal damage to the enemy
             targetHit = true;
+            // Reduce the health of the enemy
             target.reduceHealth(damage);
         }
 

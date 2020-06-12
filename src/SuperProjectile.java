@@ -4,7 +4,7 @@ import bagel.util.Point;
 /**
  * The type Super projectile.
  *
- * @param <T> the type parameter
+ * @param <T> the type parameter for enemy.
  */
 public class SuperProjectile<T extends Slicer> extends Projectile {
     private static final String IMAGE = "res/images/supertank_projectile.png";

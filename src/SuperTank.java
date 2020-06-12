@@ -1,7 +1,7 @@
 import bagel.util.Point;
 
 /**
- * The type Super tank.
+ * Super tank class.
  */
 public class SuperTank extends Tower {
     private static final int COST = 600;
@@ -12,7 +12,7 @@ public class SuperTank extends Tower {
     /**
      * Instantiates a new Super tank.
      *
-     * @param point the point
+     * @param point - the point where super tank will be placed
      */
     public SuperTank(Point point) {
         super(point, IMAGE, COST);

@@ -2,25 +2,17 @@ import bagel.Image;
 import bagel.util.Point;
 
 /**
- * The type Tower.
+ * The base Tower class.
+ * Contains basic functionalities needed by game's defense.
  */
 public class Tower extends Sprite {
-    /**
-     * The Cost.
-     */
+
     protected final int cost;
-    /**
-     * The Radius.
-     */
     protected int radius;
     private boolean enemyDetected;
     private boolean weaponsHot;
-    /**
-     * The Cooldown.
-     */
     protected double cooldown;
     private int frameCount;
-    // Constructor detail for towers
 
     /**
      * Instantiates a new Tower.
@@ -39,33 +31,31 @@ public class Tower extends Sprite {
     }
 
     /**
-     * Gets image.
+     * Gets image of the tower.
      *
-     * @return the image
+     * @return the image pf current tower
      */
-// Return the current image for current tower
+
     public Image getImage() { return this.image; }
 
     /**
      * Gets cost.
      *
-     * @return the cost
+     * @return the cost of current tower
      */
-// Get the purchase cost of tower
     public int getCost() { return cost; }
 
     /**
-     * Gets radius.
+     * Gets the effect radius of the tower.
      *
      * @return the radius
      */
-// Get the effect radius of the tower
     public int getRadius() {
         return radius;
     }
 
     /**
-     * Is weapons hot boolean.
+     * Method which signals if the tower is ready to fire
      *
      * @return the boolean
      */
@@ -79,16 +69,16 @@ public class Tower extends Sprite {
     public boolean isEnemyDetected() { return enemyDetected; }
 
     /**
-     * Sets enemy detected.
+     * Sets whether a tower has detected an enemy of not
      *
-     * @param signal the signal
+     * @param signal - A boolean which indicates enemy has been seen or not
      */
     public void setEnemyDetected(boolean signal) {
         this.enemyDetected = signal;
     }
 
     /**
-     * Start cooldown.
+     * Start cooldown for the tower.
      */
     public void startCooldown() {
         weaponsHot = false;
@@ -98,8 +88,10 @@ public class Tower extends Sprite {
      * Update.
      */
     public void update() {
+        // If shot has been fired start cooldown
         if(!weaponsHot) {
             frameCount += ShadowDefend.getTimescale();
+            // When cooldown time reached, ready weapons
             if(frameCount / ShadowDefend.FPS >= cooldown) {
                 weaponsHot = true;
                 frameCount = 0;

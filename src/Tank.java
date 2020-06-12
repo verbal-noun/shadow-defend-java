@@ -1,7 +1,7 @@
 import bagel.util.Point;
 
 /**
- * The type Tank.
+ * Tank class
  */
 public class Tank extends Tower {
 
@@ -13,7 +13,7 @@ public class Tank extends Tower {
     /**
      * Instantiates a new Tank.
      *
-     * @param point the point
+     * @param point - the point where the tank will be placed
      */
     public Tank(Point point) {
         super(point, TANK_IMAGE, TANK_COST);
