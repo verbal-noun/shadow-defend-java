@@ -5,7 +5,6 @@ import bagel.Window;
 import bagel.map.TiledMap;
 import bagel.util.Point;
 import bagel.util.Vector2;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

@@ -6,7 +6,7 @@ import bagel.util.Point;
 public class Explosive extends Sprite {
     private static final String IMAGE = "res/images/explosive.png";
     private static final double DETONATE_PERIOD = 2;
-    private static final int RAIDUS = 200;
+    private static final int RADIUS = 200;
     private static final int DAMAGE = 500;
     private int frameCount;
     private boolean status;
@@ -49,7 +49,7 @@ public class Explosive extends Sprite {
      *
      * @return the radius
      */
-    public int getRadius() {return RAIDUS;}
+    public int getRadius() {return RADIUS;}
 
     /**
      * Deal damage int.

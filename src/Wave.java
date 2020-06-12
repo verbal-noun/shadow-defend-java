@@ -26,14 +26,14 @@ public class Wave {
     private final List<MegaSlicer> megaSlicers;
     private final List<ApexSlicer> apexSlicers;
     // Map of the wave
-    private List<Point> polyline;
+    private final List<Point> polyline;
     // Attributes for event of the wave
-    private List<String> events;
+    private final List<String> events;
     private SpawnEvent spawnEvent;
     private DelayEvent delayEvent;
     private String currEvent;
     private boolean isFinished;
-    private Player player;
+    private final Player player;
 
     /**
      * Instantiates a new Wave.

@@ -2,7 +2,7 @@
  * The type Spawn event.
  */
 public class SpawnEvent extends DelayEvent {
-    private String slicerType;
+    private final String slicerType;
     private int slicerCount;
     private boolean addSlicer;
     private static final int BUFFER_TIME = 3;

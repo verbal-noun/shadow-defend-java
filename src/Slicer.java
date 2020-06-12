@@ -111,7 +111,7 @@ public class Slicer extends Sprite{
     }
 
     /**
-     * Reduce health of the slicer by the given hitpoints
+     * Reduce health of the slicer by the given hitpoints.
      *
      * @param hitPoints - the amount health will be reduced by
      */

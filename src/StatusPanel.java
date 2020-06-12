@@ -40,8 +40,7 @@ public class StatusPanel {
     private int playerLives;
     // Background image of the panel
     private static final Image background = new Image(BG_IMAGE);
-    private static Rectangle canvas = background.getBoundingBoxAt(new Point(0, 0));;
-
+    
     /**
      * Instantiates a new Status panel.
      */

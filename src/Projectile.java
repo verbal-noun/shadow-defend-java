@@ -11,7 +11,7 @@ public class Projectile<T extends Slicer> extends Sprite {
     private static final Double SPEED = 10.0;
     private static final int TANK_DAMAGE = 1;
     private boolean targetHit;
-    private T target;
+    private final T target;
     protected int damage;
 
     /**

@@ -13,14 +13,14 @@ public class AirSupport extends Tower {
     private static final String FLYING_HORIZONTAL = "Horizontal";
     private static final String FLYING_VERTICAL = "Vertical";
     private static final double SPEED = 5;
-    // Attributes to determine direction and orientaion
+    // Attributes to determine direction and orientation
     private static final int OFFSET = 25;
     private static final int HORIZONTAL = 90;
     private static final int VERTICAL = 180;
     private static final int UPPERBOUND = 4;
     private static final int FPS = 60;
     private String flyDirection;
-    private Point currPos;
+    private final Point currPos;
     private boolean status;
     private int dropTime;
     private static final Random GENERATOR = new Random();

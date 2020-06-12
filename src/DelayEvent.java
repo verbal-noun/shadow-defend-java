@@ -4,7 +4,6 @@
 public class DelayEvent {
 
     protected static final double FACTOR = 1000;
-    protected static final int EVENT_TYPE = 0;
     private static final int DELAY_TIME = 1;
     protected double buffer;
     protected boolean status;
