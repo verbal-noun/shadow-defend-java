@@ -1,15 +1,14 @@
-import bagel.util.Point;
-
-import java.util.List;
-
 /**
  * The type Spawn event.
  */
-public class SpawnEvent extends Event {
+public class SpawnEvent extends DelayEvent {
     private String slicerType;
     private int slicerCount;
-
     private boolean addSlicer;
+    private static final int BUFFER_TIME = 3;
+    private static final int SLICER_TYPE = 2;
+    private static final int SLICER_COUNT = 1;
+
 
     /**
      * Instantiates a new Spawn event.
@@ -18,10 +17,10 @@ public class SpawnEvent extends Event {
      */
     public SpawnEvent(String[] info) {
         super(info);
-        this.buffer = Double.parseDouble(info[3]) / FACTOR;
+        this.buffer = Double.parseDouble(info[BUFFER_TIME]) / FACTOR;
         this.frameCount = Integer.MAX_VALUE;
-        this.slicerType = info[2];
-        this.slicerCount = Integer.parseInt(info[1]);
+        this.slicerType = info[SLICER_TYPE];
+        this.slicerCount = Integer.parseInt(info[SLICER_COUNT]);
         this.addSlicer = false;
     }
 
@@ -34,6 +33,9 @@ public class SpawnEvent extends Event {
         return addSlicer;
     }
 
+    /**
+     * Run through the event
+     */
     @Override
     public void updateEvent() {
         // If slicer just has been added wait for delay
@@ -48,7 +50,7 @@ public class SpawnEvent extends Event {
             frameCount = 0;
             slicerCount -= 1;
         }
-
+        // If all slicers of the event has been generated
         if(slicerCount == 0) {
             status = false;
         }
@@ -57,7 +59,7 @@ public class SpawnEvent extends Event {
     }
 
     /**
-     * Generate slicer string.
+     * Return the slicer type specified by the file.
      *
      * @return the string
      */

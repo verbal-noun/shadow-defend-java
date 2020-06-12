@@ -247,34 +247,31 @@ public class Level {
         boolean invalidPos = input.getMouseX() < 0 || input.getMouseX() > Window.getWidth() ||
                 input.getMouseY() < 0 || input.getMouseY() > Window.getHeight();
 
-        boolean validPos = true;
         // If mouse cursor is not outside the game window
         if(!invalidPos) {
 
             // Check if position is over a valid item or not
             // Check if is over an invalid map item
             if (map.hasProperty((int) currPos.x, (int) currPos.y, "blocked")) {
-                validPos = false;
+                return false;
             }
             // Check if center intersects with any panel
             if (currPos.y <= BUY_PANEL_BORDER || currPos.y >= STATUS_PANEL_BORDER) {
-                validPos = false;
+                return false;
             }
             // Check if new tower intersects with any existing towers
             for (Tank T : tanks) {
                 if (T.getRect().intersects(currPos)) {
-                    validPos = false;
-                    break;
+                    return false;
                 }
             }
             for (SuperTank T : superTanks) {
                 if (T.getRect().intersects(currPos)) {
-                    validPos = false;
-                    break;
+                    return false;
                 }
             }
         }
-        return validPos;
+        return true;
     }
     //----------------------------------------- Wave related methods -------------------------------------------------//
 
