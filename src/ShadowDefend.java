@@ -2,34 +2,25 @@ import bagel.AbstractGame;
 import bagel.Input;
 import bagel.Keys;
 import bagel.Window;
-import bagel.map.TiledMap;
-import bagel.util.Point;
-
-import java.util.List;
 
 /**
  * ShadowDefend, a tower defence game.
  */
 public class ShadowDefend extends AbstractGame {
 
+    // Dimensions of the game window
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
-    private static final String MAP_FILE = "res/levels/1.tmx";
-    /**
-     * The constant FPS.
-     */
-// Change to suit system specifications. This could be
+    // Change to suit system specifications. This could be
     // dynamically determined but that is out of scope.
     public static final double FPS = 60;
     // The spawn delay (in seconds) to spawn slicers
     private static final int INITIAL_TIMESCALE = 1;
     private static final int MAX_TIMESCALE = 5;
+    private static final int MAX_LEVEL = 2;
     // Timescale is made static because it is a universal property of the game and the specification
     // says everything in the game is affected by this
     private static int timescale = INITIAL_TIMESCALE;
-    private final TiledMap map;
-    private final List<Point> polyline;
-    private double frameCount;
     private Level level;
     private int levelNo;
 
@@ -38,16 +29,8 @@ public class ShadowDefend extends AbstractGame {
      */
     public ShadowDefend() {
         super(WIDTH, HEIGHT, "ShadowDefend");
-        this.map = new TiledMap(MAP_FILE);
-        this.polyline = map.getAllPolylines().get(0);
-        this.frameCount = Integer.MAX_VALUE;
         this.levelNo = 1;
         this.level = new Level(levelNo);
-
-
-        // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
-        // This fix is entirely optional
-        //new Slicer(polyline);
     }
 
     /**
@@ -84,15 +67,13 @@ public class ShadowDefend extends AbstractGame {
         if (timescale > INITIAL_TIMESCALE) {
             timescale--;
         }
-        // Update status panel
-        //level.updateTime();
     }
 
     /**
      * Update to new level when current level is finished
      */
     private void increaseLevel() {
-        if(levelNo == 1) {
+        if(levelNo < MAX_LEVEL) {
             levelNo += 1;
             this.level = new Level(levelNo);
         }
@@ -105,9 +86,6 @@ public class ShadowDefend extends AbstractGame {
      */
     @Override
     protected void update(Input input) {
-        // Increase the frame counter by the current timescale
-        frameCount += getTimescale();
-
         // Update level when current level is finished
         if(!level.isFinished() && level.isPlayerKilled()) {
             Window.close();
@@ -116,10 +94,8 @@ public class ShadowDefend extends AbstractGame {
                 increaseLevel();
             }
         }
-
+        // Update the game state of current level
         level.updateLevel(input);
-
-        //System.out.println(level.waves.size());
 
         // Handle key presses
         if (input.wasPressed(Keys.S)) {

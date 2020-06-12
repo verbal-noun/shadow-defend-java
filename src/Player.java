@@ -16,7 +16,7 @@ public class Player {
     }
 
     /**
-     * Gets money.
+     * Gets money of current player.
      *
      * @return the money
      */
@@ -25,32 +25,32 @@ public class Player {
     }
 
     /**
-     * Reduce money.
+     * Reduce money of current player by given amount.
      *
-     * @param amount the amount
+     * @param amount - the amount money will be reduced
      */
     public void reduceMoney(int amount) { money -= amount; }
 
     /**
-     * Add money.
+     * Add money to the exiting player amount
      *
-     * @param amount the amount
+     * @param amount - the amount that will be added.
      */
     public void addMoney(int amount) { money += amount; }
 
     /**
-     * Gets lives.
+     * Gets lives remaining.
      *
-     * @return the lives
+     * @return the lives of player
      */
     public int getLives() {
         return lives;
     }
 
     /**
-     * Reduce lives.
+     * Reduce lives by a certain amount
      *
-     * @param amount the amount
+     * @param amount - the amount which will de deducted
      */
     public void reduceLives(int amount) { lives -= amount; }
 }
