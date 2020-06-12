@@ -40,25 +40,25 @@ public class Level {
     private final List<Point> polyline;
     // File containing wave information
     private static final String WAVE_FILE = "res/levels/waves.txt";
-    private List<Wave> waves = new ArrayList<>();
+    private final List<Wave> waves = new ArrayList<>();
     // Player for the level
-    private Player player;
+    private final Player player;
     // Panels
-    private BuyPanel buyPanel;
-    private StatusPanel statusPanel;
+    private final BuyPanel buyPanel;
+    private final StatusPanel statusPanel;
     private boolean finished;
     // Attributes related to purchase
     private boolean itemSelected;
     // Attributes for level's defense
-    private List<Tower> purchaseItems;
+    private final List<Tower> purchaseItems;
     private int selectedItem;
-    private List<Tank> tanks;
-    private List<SuperTank> superTanks;
-    private List<AirSupport> airSupport;
+    private final List<Tank> tanks;
+    private final List<SuperTank> superTanks;
+    private final List<AirSupport> airSupport;
     private int planeCount;
-    private List<Explosive> explosives;
-    private List<Projectile> tankProjectiles;
-    private List<SuperProjectile> superProjectiles;
+    private final List<Explosive> explosives;
+    private final List<Projectile> tankProjectiles;
+    private final List<SuperProjectile> superProjectiles;
     private int waveNo;
     private boolean playerKilled;
 
