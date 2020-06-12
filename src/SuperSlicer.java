@@ -1,9 +1,8 @@
 import bagel.util.Point;
-
 import java.util.List;
 
 /**
- * The type Super slicer.
+ * The Super slicer class.
  */
 public class SuperSlicer extends Slicer {
 
@@ -15,7 +14,7 @@ public class SuperSlicer extends Slicer {
      * Creates a new Super Slicer
      *
      * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
-     * @param imageSrc the image src
+     * @param imageSrc the image src which determines of the image of the slicer
      */
     public SuperSlicer(List<Point> polyline, String imageSrc) {
         super(polyline, imageSrc);

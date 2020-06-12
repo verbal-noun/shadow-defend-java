@@ -1,4 +1,3 @@
-import bagel.Input;
 import bagel.util.Point;
 import bagel.util.Vector2;
 import java.util.List;
@@ -8,62 +7,24 @@ import java.util.List;
  */
 public class Slicer extends Sprite{
 
-    /**
-     * The constant SPEED.
-     */
     protected static final double SPEED = 2;
-    /**
-     * The constant DEF_HEALTH.
-     */
     protected static final int DEF_HEALTH = 1;
-    /**
-     * The constant REWARD.
-     */
     protected static final int REWARD = 2;
-    /**
-     * The constant PENALTY.
-     */
     protected static final int PENALTY = 1;
-    /**
-     * The Health.
-     */
+    private static final int CHILD_NUM = 0;
+    // Attributes related to basic features
     protected int health;
-    /**
-     * The Speed.
-     */
     protected double speed;
-    /**
-     * The Polyline.
-     */
-    protected final List<Point> polyline;
-    /**
-     * The Target point index.
-     */
-    protected int targetPointIndex;
-    /**
-     * The Finished.
-     */
-    protected boolean finished;
-    /**
-     * The Killed.
-     */
-    protected boolean killed;
-    /**
-     * The Reward.
-     */
     protected int reward;
-    /**
-     * The Penalty.
-     */
     protected int penalty;
-    /**
-     * The Has children.
-     */
-    protected boolean hasChildren;
-    /**
-     * The Child no.
-     */
     protected int childNo;
+    // The map and the target
+    protected final List<Point> polyline;
+    protected int targetPointIndex;
+    // Attributes to signal the state of the slicer
+    protected boolean finished;
+    protected boolean killed;
+    protected boolean hasChildren;
 
     /**
      * Creates a new Slicer
@@ -82,11 +43,11 @@ public class Slicer extends Sprite{
         this.killed = false;
         this.penalty = PENALTY;
         this.hasChildren = false;
-        this.childNo = 0;
+        this.childNo = CHILD_NUM;
     }
 
     /**
-     * Gets health.
+     * Gets remaining health of the slicer.
      *
      * @return the health
      */
@@ -95,15 +56,19 @@ public class Slicer extends Sprite{
     }
 
     /**
-     * Update.
+     * Update status of the slicer
      *
-     * @param input the input
      */
-    public void update(Input input) {
+    public void update() {
+        // If slicer has reached the end or has been killed
         if(finished) {
             return;
         }
 
+        /**
+         * NOTE: the movement logic has been implemented from Project 1 solution
+         *      I acknowledge the following code is not mine.
+         */
         // Obtain where we are and our target
         Point currentPoint = getCenter();
         Point targetPoint = polyline.get(targetPointIndex);
@@ -137,7 +102,7 @@ public class Slicer extends Sprite{
     }
 
     /**
-     * Is finished boolean.
+     * Checks if the slicer is finished or not
      *
      * @return the boolean
      */
@@ -146,9 +111,9 @@ public class Slicer extends Sprite{
     }
 
     /**
-     * Reduce health.
+     * Reduce health of the slicer by the given hitpoints
      *
-     * @param hitPoints the hit points
+     * @param hitPoints - the amount health will be reduced by
      */
     public void reduceHealth(int hitPoints) {
         health -= hitPoints;
@@ -159,11 +124,10 @@ public class Slicer extends Sprite{
     }
 
     /**
-     * Is killed boolean.
+     * Checks if the slicer is killed or not
      *
      * @return the boolean
      */
-// Method to determine whether the slicer was killed or not
     public boolean isKilled() { return  killed; }
 
     /**
@@ -174,31 +138,31 @@ public class Slicer extends Sprite{
     public int giveReward() { return reward; }
 
     /**
-     * Gets penalty.
+     * Gets penalty associated with the slicer.
      *
      * @return the penalty
      */
-//Get the damage dealt by the slicer
     public int getPenalty() { return penalty;}
 
     /**
-     * Gets child num.
+     * Gets children number current slicer
      *
-     * @return the child num
+     * @return childNo - the number of children of the slicer
      */
     public int getChildNum() { return childNo; }
 
     /**
-     * Sets target index.
+     * Sets target index of the polyline the slicer will follow
+     * Method used to spawn children in the same point as the parent
      *
-     * @param index the index
+     * @param index - the target index in the polyline
      */
     public void setTargetIndex(int index) {
         this.targetPointIndex = index;
     }
 
     /**
-     * Gets target index.
+     * Gets target index of the current slicer
      *
      * @return the target index
      */
@@ -207,9 +171,9 @@ public class Slicer extends Sprite{
     }
 
     /**
-     * Sets position.
+     * Sets position to a given point
      *
-     * @param position the position
+     * @param position - the Point which be set at the slicer's current position
      */
     public void setPosition(Point position) {
         rect = image.getBoundingBoxAt(position);

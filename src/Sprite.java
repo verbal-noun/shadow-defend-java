@@ -10,17 +10,8 @@ import bagel.util.Vector2;
  */
 public abstract class Sprite {
 
-    /**
-     * The Image.
-     */
     protected Image image;
-    /**
-     * The Rect.
-     */
     protected Rectangle rect;
-    /**
-     * The Angle.
-     */
     protected double angle;
 
     /**
@@ -36,30 +27,30 @@ public abstract class Sprite {
     }
 
     /**
-     * Gets rect.
+     * Gets bounding box of the entity.
      *
-     * @return the rect
+     * @return the rect of class Rectangle.
      */
     public Rectangle getRect() { return new Rectangle(rect); }
 
     /**
-     * Move.
+     * Move the game entity by dx amount
      *
-     * @param dx the dx
+     * @param dx - the amount by which the entity needs to be moves
      */
     public void move(Vector2 dx) { rect.moveTo(rect.topLeft().asVector().add(dx).asPoint()); }
 
     /**
-     * Gets center.
+     * Gets center of the game entity
      *
-     * @return the center
+     * @return the center as a Point object
      */
     public Point getCenter() {return getRect().centre(); }
 
     /**
-     * Sets angle.
+     * Sets angle of the entity
      *
-     * @param angle the angle
+     * @param angle - the angle which will be set
      */
     public void setAngle(double angle) {
         this.angle = angle;

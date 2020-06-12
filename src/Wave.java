@@ -224,7 +224,7 @@ public class Wave {
         // Update the state of wave's regular slicers
         for (int i = slicerList.size() - 1; i >= 0; i--) {
             T s = slicerList.get(i);
-            s.update(input);
+            s.update();
             if (s.isFinished()) {
                 slicerList.remove(i);
                 if(s.isKilled()) {
