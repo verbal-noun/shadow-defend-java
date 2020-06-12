@@ -186,7 +186,6 @@ public class Wave {
                 spawnEvent = new SpawnEvent(eventInfo);
             } else {
                 delayEvent = new DelayEvent(eventInfo);
-                System.out.println("delay event");
             }
             // Remove old event from the list
             events.remove(TOP);

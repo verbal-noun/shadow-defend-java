@@ -14,14 +14,18 @@ import java.util.List;
 
 
 /**
- * The type Level.
+ * The level class
+ * This class acts as a hub for all the game entities to interact
+ * Level drives the game and controls the state of game entities
  */
 public class Level {
+    // Dimensions
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
     private static final int TOP = 0;
     private static final int BUY_PANEL_BORDER = 100;
     private static final int STATUS_PANEL_BORDER = 675;
+    // Attributes to indicate tower
     private static final int TANK = 0;
     private static final int SUPER_TANK = 1;
     private static final int AIR_SUPPORT = 2;
@@ -45,6 +49,7 @@ public class Level {
     private boolean finished;
     // Attributes related to purchase
     private boolean itemSelected;
+    // Attributes for level's defense
     private List<Tower> purchaseItems;
     private int selectedItem;
     private List<Tank> tanks;
@@ -54,7 +59,6 @@ public class Level {
     private List<Explosive> explosives;
     private List<Projectile> tankProjectiles;
     private List<SuperProjectile> superProjectiles;
-    private Wave currWave;
     private int waveNo;
     private boolean playerKilled;
 
@@ -94,7 +98,7 @@ public class Level {
 //------------------------------------------- Level methods ------------------------------------------------------//
 
     /**
-     * Render.
+     * Render all the elements of the game
      */
     public void render() {
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
@@ -146,22 +150,24 @@ public class Level {
     }
 
     /**
-     * Is finished boolean.
+     * Method to return if the game is finished or not
      *
-     * @return the boolean
+     * @return the boolean signifying game's condition
      */
     public boolean isFinished() { return finished;}
 
     /**
      * Is player killed boolean.
      *
-     * @return the boolean
+     * @return the boolean to indicate if player is killed.
      */
     public boolean isPlayerKilled() { return playerKilled; }
 
     //------------------------------------------ Panel related methods -----------------------------------------------//
 
-    // Update the status panel with proper information
+    /**
+     * Update the buy and status panels of the game
+     */
     private void updatePanels() {
         // Status panel related configurations
         statusPanel.setTimeScale();
@@ -178,17 +184,25 @@ public class Level {
         // Buy panel related configuration
         buyPanel.setPlayerMoney(player.getMoney());
     }
-    // Method to enable tower purchase and placement
+
+    /**
+     * Method to facilitate tower purchase and placement
+     * Tracks input from the player and updates accordingly
+     *
+     * @param input - The input coming from the player
+     */
     private void playerInteraction(Input input) {
         // Point to track current position of the cursor
         Point currPos = new Point(input.getMouseX(), input.getMouseY());
         // Check if left click was pressed or not
+        // If mouse left is pressed but no item has been selected from before
         if(input.wasPressed(MouseButtons.LEFT) && !itemSelected) {
             // If item hasn't been selected, check where mouse was pressed
             for(int i = 0; i < purchaseItems.size(); i++) {
                 Tower T = purchaseItems.get(i);
                 if(T.getRect().intersects(new Point(input.getMouseX(), input.getMouseY()))) {
                     selectedItem = i;
+                    // If player has enough money to buy it, select item
                     if(player.getMoney() >= purchaseItems.get(selectedItem).getCost()) {
                         itemSelected = true;
                     }
@@ -225,6 +239,7 @@ public class Level {
                 // Clear selection
                 itemSelected = false;
             }
+         // If mouse right was pressed then clear selections if any
         } else if (input.wasPressed(MouseButtons.RIGHT) && itemSelected) {
             // Clear selection
             itemSelected = false;
@@ -242,6 +257,15 @@ public class Level {
 
     }
 
+    /**
+     * A method to check if the current position is a valid area for placing a new tower
+     * This method notifies whether an item should be drawn under cursor and place when
+     * selected.
+     *
+     * @param currPos - the position on which the mouse is hovering
+     * @param input - Player input
+     * @return - returns whether currPos is on a valid position or not
+     */
     private boolean checkPosValidity(Point currPos, Input input) {
         // Check if current cursor location is outside game window
         boolean invalidPos = input.getMouseX() < 0 || input.getMouseX() > Window.getWidth() ||
@@ -271,13 +295,20 @@ public class Level {
                 }
             }
         }
+        // If all the conditions have been met, return true
         return true;
     }
+
     //----------------------------------------- Wave related methods -------------------------------------------------//
 
-    // Load waves from waves file and fill events
+    /**
+     * A method to load the waves from the waves.txt file.
+     * This creates the appropriate number of waves as well as
+     * allocates the events to corresponding waves.
+     */
     private void loadWave() {
         BufferedReader reader;
+        // Read lines from waves.txt file
         try {
             reader = new BufferedReader(new FileReader(WAVE_FILE));
             String line = reader.readLine();
@@ -305,11 +336,16 @@ public class Level {
      * Start level.
      */
     public void startLevel() {
+        // Condition to ensure another wave isn't started while a wave is active
         if(!waves.get(TOP).waveStatus()) {
             waves.get(TOP).startWave();
         }
     }
-    // Load next wave of the level if any
+
+    /**
+     * Load the next wave in the list
+     * Allocates proper reward to player for passing the wave too.
+     */
     private void loadNextWave() {
         waves.remove(TOP);
         player.addMoney(100 * waveNo + 150);
@@ -319,7 +355,25 @@ public class Level {
 
     //----------------------------------------- Tower related methods ------------------------------------------------//
 
-    // Draw the towers of the level
+    /**
+     * Update the defense of the level
+     * This includes passive and active towers as well as any projectiles or explosives
+     */
+    private void updateDefense() {
+        // Update the active towers
+        updateTanks(tanks);
+        updateTanks(superTanks);
+        // Update any projectiles or explosives
+        updateExplosive();
+        updateProjectiles(tankProjectiles);
+        updateProjectiles(superProjectiles);
+        // Update passive towers
+        flyAirplanes();
+    }
+
+    /**
+     * Render towers player has purchased so far.
+     */
     private void renderTowers() {
         // Tanks
         for(Tank T : tanks) {
@@ -338,19 +392,13 @@ public class Level {
             E.render();
         }
     }
-    // Update the state of towers in the game
-    private void updateDefense() {
-        // Update the active towers
-        updateTanks(tanks);
-        updateTanks(superTanks);
-        // Update any projectiles or explosives
-        updateExplosive();
-        updateProjectiles(tankProjectiles);
-        updateProjectiles(superProjectiles);
-        // Update passive towers
-        flyAirplanes();
-    }
-    // Update the state of active towers
+
+    /**
+     * A method to update the game state of any active tower player has purchased.
+     *
+     * @param towers - a list of towers
+     * @param <T> - The class type of the towers
+     */
     private <T extends  Tower> void updateTanks(List<T> towers) {
         for(int i = towers.size() - 1; i >= 0; i--) {
             T tower = towers.get(i);
@@ -358,18 +406,26 @@ public class Level {
         }
     }
 
-    // Update projectiles launched by active towers
+    /**
+     * Update the different type of projectiles active in the map
+     *
+     * @param projectiles - A list of projectiles
+     * @param <T> - The class type of projectiles.
+     */
     private <T extends Projectile<Slicer>> void updateProjectiles(List<T> projectiles) {
         for(int i = projectiles.size() - 1; i >= 0; i--) {
             T projectile = projectiles.get(i);
             projectile.update();
+            // If projectile has hit its target remove it
             if(projectile.isTargetHit()) {
                 projectiles.remove(i);
             }
         }
     }
 
-    // Fly the planes purchased by the player
+    /**
+     * Update the state of airsupport player has purchased
+     */
     private void flyAirplanes() {
         for(int i = airSupport.size() - 1; i >= 0; i--) {
             AirSupport plane = airSupport.get(i);
@@ -387,7 +443,9 @@ public class Level {
 
     //------------------------------------------ Projectile related methods ------------------------------------------//
 
-    // Update the status of level's explosives
+    /**
+     * Update the game state of explosives
+     */
     private void updateExplosive() {
         for(int i = explosives.size()-1; i >= 0; i--) {
             Explosive E = explosives.get(i);
@@ -403,7 +461,14 @@ public class Level {
             }
         }
     }
-    // Method to deal damage to slicers by explosives
+
+    /**
+     * Method to deal damage to the enemy
+     *
+     * @param enemies - List of enemies to searched
+     * @param bomb - The bomb
+     * @param <T> - The class of enemy
+     */
     private <T extends Slicer> void explodeEnemy(List<T> enemies, Explosive bomb) {
         for(T enemy : enemies) {
             Vector2 distance = enemy.getCenter().asVector().sub(bomb.getCenter().asVector());
@@ -412,7 +477,11 @@ public class Level {
             }
         }
     }
-    // Method to fire at enemies when in range by active towers
+
+    /**
+     * Method to facilitate active towers of enemies
+     *
+     */
     private void attackEnemy() {
         // Position and fire tanks
         for(Tank tank : tanks) {
@@ -426,6 +495,13 @@ public class Level {
         }
     }
 
+    /**
+     * Detect enemy for a given active tower
+     * If enemy is in range, facilitate attacking of tower
+     *
+     * @param tank - The tower which will look for enemies
+     * @param <T> - The class type of tower
+     */
     private <T extends Tower> void detectEnemy(T tank) {
         tank.setEnemyDetected(false);
         // Load all the apex slicers of the wave if any
@@ -445,13 +521,19 @@ public class Level {
 
     }
 
-    // Method to detect enemy in range
+    /**
+     * Method to detect enemy in range and shoot the enemy
+     *
+     * @param enemyList - List of active slicers in the map
+     * @param tower - The tower which will look for enemies
+     * @param <E> - The type of slicer
+     * @param <T> - The type of tower
+     */
     private <E extends Slicer, T extends Tower> void searchEnemy(List<E> enemyList, T tower) {
         // Determine if any enemy exists within range of tower
         for(E enemy : enemyList) {
             Vector2 distance = enemy.getCenter().asVector().sub(tower.getCenter().asVector());
             if(distance.length() <= tower.getRadius()) {
-                //System.out.println(distance);
                 // Signal enemy is detected
                 tower.setEnemyDetected(true);
                 // Turn tower towards enemy
@@ -469,7 +551,15 @@ public class Level {
         }
     }
 
-    // A method to facilitate shooting of enemy slicers
+    /**
+     * A method to shoot the enemy which is in range
+     * This method create appropriate projectiles and adds them to the game
+     *
+     * @param enemy - The enemy which is in target
+     * @param tower - The tower which has detected the enemy
+     * @param <E> - The Type of slicer
+     * @param <T> - The type of tower
+     */
     private <E extends Slicer, T extends Tower> void shootEnemy(E enemy, T tower) {
         // Determine type of tower and launch projectile accordingly
         if(tower.getClass() == Tank.class) {
