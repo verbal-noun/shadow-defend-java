@@ -43,7 +43,7 @@ public class SpawnEvent extends DelayEvent {
             addSlicer = false;
         }
         // spawn slicers as required
-        if(frameCount / FPS >= buffer && slicerCount > 0){
+        if(frameCount / ShadowDefend.FPS >= buffer && slicerCount > 0){
             // Add a slicer to the current wave according to its type
             // If slicer is regular kind
             addSlicer = true;

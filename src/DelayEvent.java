@@ -4,13 +4,11 @@
 public class DelayEvent {
 
     protected static final double FACTOR = 1000;
-    protected static final double FPS = 60;
     protected static final int EVENT_TYPE = 0;
     private static final int DELAY_TIME = 1;
     protected double buffer;
     protected boolean status;
     protected int frameCount;
-    private String eventType;
 
     /**
      * Instantiates a new Event.
@@ -18,7 +16,6 @@ public class DelayEvent {
      * @param info - the information from the waves.txt file
      */
     public DelayEvent(String[] info){
-        this.eventType = info[EVENT_TYPE];
         this.status = true;
         this.frameCount = 0;
         this.buffer = Double.parseDouble(info[DELAY_TIME]) / FACTOR;
@@ -30,7 +27,7 @@ public class DelayEvent {
     public void updateEvent() {
         frameCount += ShadowDefend.getTimescale();
         // Update buffer time
-        if(frameCount == FPS) {
+        if(frameCount == ShadowDefend.FPS) {
             // Decrease delay period
             buffer -= 1;
             frameCount = 0;
@@ -39,15 +36,6 @@ public class DelayEvent {
         if(buffer <= 0) {
             status = false;
         }
-    }
-
-    /**
-     * Gets event type.
-     *
-     * @return the event type
-     */
-    public String getEventType() {
-        return eventType;
     }
 
     /**
