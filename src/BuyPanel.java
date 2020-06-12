@@ -4,7 +4,6 @@ import bagel.Image;
 import bagel.util.Colour;
 import bagel.util.Point;
 import bagel.util.Rectangle;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,36 +38,29 @@ public class BuyPanel {
     private final Tower superTank;
     private final Tower airSupport;
     private List<Tower> purchaseItems;
-
-    /**
-     * Gets purchase items.
-     *
-     * @return the purchase items
-     */
-    public List<Tower> getPurchaseItems() {
-        return purchaseItems;
-    }
-
-    // Attribute to keep track of player's current money
     private int playerMoney;
+
+
 
     /**
      * Instantiates a new Buy panel.
      *
-     * @param money the money
+     * @param money - The amount of money assign to the player
      */
     public BuyPanel(int money) {
         // Initialise purchase items
-        this.tank = new Tower(new Point(64, OFFSET_H), TANK, 250);
-        this.superTank = new Tower(new Point(tank.getCenter().x + OFFSET_W, OFFSET_H), SUPER_TANK, 600);
-        this.airSupport = new Tower(new Point(superTank.getCenter().x + OFFSET_W, OFFSET_H), AIR_SUPPORT, 500);
+        this.tank = new Tower(new Point(64, OFFSET_H), TANK, TANK_COST);
+        this.superTank = new Tower(new Point(tank.getCenter().x + OFFSET_W, OFFSET_H),
+                SUPER_TANK, SUP_TANK_COST);
+        this.airSupport = new Tower(new Point(superTank.getCenter().x + OFFSET_W, OFFSET_H),
+                AIR_SUPPORT, AIR_SUP_COST);
         this.playerMoney = money;
         // Load items into list
         loadItems();
     }
 
     /**
-     * Render panel.
+     * Render panel onto the screen
      */
     public void renderPanel() {
         // Draw the background
@@ -85,7 +77,19 @@ public class BuyPanel {
         renderKeys();
     }
 
-    // Function to display the prices of purchase items
+    /**
+     * Gets purchase items of the game
+     *
+     * @return A list of purchase items available.
+     */
+    public List<Tower> getPurchaseItems() {
+        return purchaseItems;
+    }
+
+    /**
+     * Renders the prices of the purchase items
+     *
+     */
     private void renderPrices() {
         Font font = new Font(FONT_FILE, 20);
         DrawOptions color = new DrawOptions();
@@ -106,7 +110,10 @@ public class BuyPanel {
         font.drawString("$" + playerMoney, 824, 65);
     }
 
-    // Display the game controls
+    /**
+     * Renders the key binds
+     *
+     */
     private void renderKeys() {
         Font font = new Font(FONT_FILE, 14);
         font.drawString("Key binds: ", KEY_W, 20);
@@ -123,20 +130,12 @@ public class BuyPanel {
     }
 
     /**
-     * Sets player money.
+     * Sets player money to be displayed
      *
-     * @param money the money
+     * @param money - the current money of the player
      */
     public void setPlayerMoney(int money) {
         playerMoney = money;
     }
 
-    /**
-     * Gets canvas.
-     *
-     * @return the canvas
-     */
-    public Rectangle getCanvas() {
-        return canvas;
-    }
 }
