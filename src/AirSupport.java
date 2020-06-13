@@ -12,12 +12,12 @@ public class AirSupport extends Tower {
     private static final String IMAGE = "res/images/airsupport.png";
     private static final String FLYING_HORIZONTAL = "Horizontal";
     private static final String FLYING_VERTICAL = "Vertical";
-    private static final double SPEED = 5;
+    private static final double SPEED = 3;
     // Attributes to determine direction and orientation
     private static final int OFFSET = 25;
     private static final int HORIZONTAL = 90;
     private static final int VERTICAL = 180;
-    private static final int UPPERBOUND = 4;
+    private static final int UPPERBOUND = 2;
     private static final int FPS = 60;
     private String flyDirection;
     private final Point currPos;
@@ -41,7 +41,7 @@ public class AirSupport extends Tower {
         // Get new an image and bounding box at new location
         this.rect = image.getBoundingBoxAt(currPos);
         this.status = true;
-        this.dropTime = GENERATOR.nextInt(UPPERBOUND);
+        this.dropTime = GENERATOR.nextInt(UPPERBOUND) + 1;
         this.launchStatus = false;
         frameCount = 0;
     }
@@ -129,6 +129,6 @@ public class AirSupport extends Tower {
         // Check if drop time is reached or not
         launchStatus = true;
         // Generate new random cooldown period
-        dropTime = GENERATOR.nextInt(UPPERBOUND);
+        dropTime = GENERATOR.nextInt(UPPERBOUND) + 1;
     }
 }
