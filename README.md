@@ -7,6 +7,9 @@ To watch the demo gamplay on YouTube, click [this link](https://www.youtube.com/
 
 ## Here are some in-game screenshots 
 
+![Screenshot of level-1](samples/sample_1.png)
+
+![Screenshot of level 2](samples/sample_3.png)
 
 # How to install 
 
