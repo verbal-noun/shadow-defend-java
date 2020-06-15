@@ -1,5 +1,5 @@
 # Shadow Defend Java
-Simple tower defense type game based I created using Java and the Bagel GUI library. The purpose behind making this game was to exercise core OOP concepts such as inheritance, polymorphism, encapsulation et. as well as learn advanced Java features such as asynchronous programming, state management, exception handling etc. 
+Simple tower defense type game I created using Java and the Bagel GUI library. The purpose behind making this game was to exercise core OOP concepts such as inheritance, polymorphism, encapsulation et. as well as learn advanced Java features such as asynchronous programming, state management, exception handling etc. 
 
 # Demo Gameplay 
 
